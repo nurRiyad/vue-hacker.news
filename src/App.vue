@@ -48,4 +48,7 @@
   text-align: center;
   color: rgb(255, 255, 255);
 }
+a {
+  text-decoration: none;
+}
 </style>

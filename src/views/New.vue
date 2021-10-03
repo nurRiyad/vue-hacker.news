@@ -28,7 +28,7 @@ export default {
     ...mapActions(["getNewsId"]),
   },
   created() {
-    console.log("I am here");
+    //console.log("I am here");
     this.getNewsId("newstories");
   },
   components: {
@@ -40,9 +40,9 @@ export default {
 <style>
 #element {
   list-style-type: none;
-  padding: 0;
   margin: 30px;
-  padding: 20px;
+  padding: 10px;
+  padding-left: 0;
   border-bottom: 2px solid rgb(0, 0, 0);
   text-align: left;
 }
