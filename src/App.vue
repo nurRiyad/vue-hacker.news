@@ -48,7 +48,19 @@
   text-align: center;
   color: rgb(255, 255, 255);
 }
-a {
+ul {
+  list-style-type: none;
+  padding-inline-start: 0;
+}
+button {
   text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+  border: 0;
+  margin: 7px;
+}
+button:hover {
+  background-color: rgb(230, 113, 17);
+  color: black;
 }
 </style>

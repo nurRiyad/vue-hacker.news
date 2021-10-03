@@ -1,9 +1,13 @@
 <template>
-  <div id="element" v-if="status == 'ok'">
-    <a :href="obj.url">{{ obj.title }}</a>
-    <div>
-      <span> by {{ obj.by }} | {{ tf(obj.time) }} ago | {{}} Comments </span>
-      <span></span>
+  <div class="container" id="element" v-if="status == 'ok'">
+    <div class="position">
+      <span class="score">{{ obj.score }}</span>
+      <span class="title">
+        <a :href="obj.url">{{ obj.title }}</a>
+      </span>
+      <span class="time">by {{ obj.by }} || </span>
+      <span class="comment">{{ tf(obj.time) }} ago || </span>
+      <span> Comments </span>
     </div>
   </div>
   <div v-else-if="status == 'loading'">
@@ -62,12 +66,41 @@ export default {
 </script>
 
 <style>
-#element {
-  list-style-type: none;
-  padding: 0;
-  margin: 30px;
+hr {
+  margin: 0;
+}
+.container {
+  background-color: white;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgb(119, 117, 117);
   text-align: left;
+  font-size: 0.85em;
+  color: #828282;
+}
+
+.position {
+  clear: both;
+  margin: 10px 0 10px 0;
+  padding: 0 10px 0 10px;
+  width: 100%;
+}
+.score {
+  font-size: 25px;
+  margin-right: 10px;
+  float: left;
+  width: 80px;
+  text-align: center;
+  color: rgb(230, 113, 17);
+}
+
+.comment {
+  clear: both;
+}
+
+.title a {
+  display: block;
+  text-decoration: none;
+  font-size: 17px;
+  color: #34495e;
+  line-height: 20px;
 }
 </style>

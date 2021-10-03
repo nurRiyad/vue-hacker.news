@@ -1,7 +1,14 @@
 <template>
-  <h1>{{ data }}</h1>
-  <div v-for="(val, ind) in newids" :key="ind">
-    <Printlist :id="val"></Printlist>
+  <ul>
+    <li v-for="(val, ind) in newids" :key="ind">
+      <Printlist :id="val"></Printlist>
+      <hr />
+    </li>
+  </ul>
+  <div id="pageChange">
+    <button class="previous" @click="previousPage">Prev</button>
+    <span>{{ pageNumber }}</span>
+    <button class="next" @click="nextPage">Next</button>
   </div>
 </template>
 
@@ -12,7 +19,7 @@ export default {
   name: "New",
   data() {
     return {
-      data: "This is New Page",
+      pageNumber: 1,
     };
   },
   computed: {
@@ -26,6 +33,16 @@ export default {
   },
   methods: {
     ...mapActions(["getNewsId"]),
+    nextPage() {
+      if (this.pageNumber >= 50) {
+        this.pageNumber = 50;
+      } else this.pageNumber += 1;
+    },
+    previousPage() {
+      if (this.pageNumber <= 1) {
+        this.pageNumber = 1;
+      } else this.pageNumber -= 1;
+    },
   },
   created() {
     //console.log("I am here");
@@ -36,14 +53,3 @@ export default {
   },
 };
 </script>
-
-<style>
-#element {
-  list-style-type: none;
-  margin: 30px;
-  padding: 10px;
-  padding-left: 0;
-  border-bottom: 2px solid rgb(0, 0, 0);
-  text-align: left;
-}
-</style>
