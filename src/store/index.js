@@ -17,19 +17,17 @@ export default createStore({
     },
   },
   actions: {
-    getNewsId(context, payload) {
-      console.log("GetTopNewsId Called", payload);
-      axios
-        .get(
+    async getNewsId(context, payload) {
+      //console.log("GetTopNewsId Called", payload);
+      try {
+        let res = await axios.get(
           `https://hacker-news.firebaseio.com/v0/${payload}.json?print=pretty`
-        )
-        .then((res) => {
-          if (payload == "topstories") context.commit("setTopNewsId", res.data);
-          else context.commit("SetNewNewsId", res.data);
-        })
-        .catch((err) => {
-          console.log("getNewsId Erros", err);
-        });
+        );
+        if (payload == "topstories") context.commit("setTopNewsId", res.data);
+        else context.commit("SetNewNewsId", res.data);
+      } catch (err) {
+        console.log("called from getNewsId", err);
+      }
     },
   },
 });

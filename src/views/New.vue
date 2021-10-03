@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li v-for="(val, ind) in newids" :key="ind">
-      <Printlist :id="val"></Printlist>
+      <Test :ids="val" :index="ind"></Test>
       <hr />
     </li>
   </ul>
@@ -13,8 +13,9 @@
 </template>
 
 <script>
-import Printlist from "../components/Printlist.vue";
+import Test from "../components/Test.vue";
 import { mapActions, mapState } from "vuex";
+
 export default {
   name: "New",
   data() {
@@ -25,10 +26,13 @@ export default {
   computed: {
     ...mapState(["newNewsId"]),
     newids() {
-      return this.newNewsId.filter((val, ind) => {
-        if (ind < 10) return true;
-        else return false;
-      });
+      let f = (this.pageNumber - 1) * 10;
+      let l = this.pageNumber * 10 - 1;
+      let d = [];
+      for (let i = f; i <= l; i++) {
+        d.push(this.newNewsId[i]);
+      }
+      return d;
     },
   },
   methods: {
@@ -45,11 +49,12 @@ export default {
     },
   },
   created() {
-    //console.log("I am here");
     this.getNewsId("newstories");
   },
   components: {
-    Printlist,
+    Test,
   },
 };
 </script>
+
+<style></style>

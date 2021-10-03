@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li v-for="(val, ind) in topids" :key="ind">
-      <Printlist :id="val"></Printlist>
+      <Test :ids="val" :index="ind"></Test>
       <hr />
     </li>
   </ul>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Printlist from "../components/Printlist.vue";
+import Test from "../components/Test.vue";
 import { mapActions, mapState } from "vuex";
 export default {
   name: "Top",
@@ -25,10 +25,13 @@ export default {
   computed: {
     ...mapState(["topNewsId"]),
     topids() {
-      return this.topNewsId.filter((val, ind) => {
-        if (ind < 10) return true;
-        else return false;
-      });
+      let f = (this.pageNumber - 1) * 10;
+      let l = this.pageNumber * 10 - 1;
+      let d = [];
+      for (let i = f; i <= l; i++) {
+        d.push(this.topNewsId[i]);
+      }
+      return d;
     },
   },
   methods: {
@@ -48,7 +51,7 @@ export default {
     this.getNewsId("topstories");
   },
   components: {
-    Printlist,
+    Test,
   },
 };
 </script>
