@@ -25,10 +25,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["getTopNewsId"]),
+    ...mapActions(["getNewsId"]),
   },
   created() {
-    this.getTopNewsId();
+    this.getNewsId("topstories");
   },
   components: {
     Printlist,
