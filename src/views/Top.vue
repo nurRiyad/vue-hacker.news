@@ -19,7 +19,7 @@ export default {
   name: "Top",
   data() {
     return {
-      pageNumber: 123432423,
+      pageNumber: 1,
     };
   },
   computed: {
