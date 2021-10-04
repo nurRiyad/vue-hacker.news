@@ -2,10 +2,16 @@
   <div class="container">
     <div class="position">
       <span class="score">{{ score }}</span>
-      <span class="title">
-        <a :href="link">{{ title }}</a>
-        <span class="time">by {{ creator }} || </span>
-        <span class="comment">{{ tf }} ago || </span>
+      <span class="ttl">
+        <a :href="link" target="blank">{{ title }}</a>
+      </span>
+      <span>
+        <router-link
+          :to="{ name: 'ProfileDetail', params: { id: creator || '-' } }"
+        >
+          <span>by {{ creator }} </span>
+        </router-link>
+        <span class="comment"> || {{ tf }} ago || </span>
         <span> Comments </span>
       </span>
     </div>
@@ -45,29 +51,40 @@ export default {
       else finaltime = `${parseInt(s)} seconds`;
       return finaltime;
     },
+    userName() {
+      return this.creator;
+    },
   },
   watch: {
-    ids() {
-      //console.log(newval, oldval);
-      this.getData();
+    ids: {
+      immediate: true,
+      handler() {
+        //console.log("called");
+        this.getData();
+      },
     },
   },
   methods: {
     setData(val) {
-      this.title = val.title;
-      this.time = val.time;
-      this.score = val.score;
-      this.kids = val.kids;
-      this.link = val.url;
-      this.creator = val.by;
+      //console.log("setdata", val);
+      //console.log("Riyad called");
+      if (val?.data) {
+        this.title = val.data.title;
+        this.time = val.data.time;
+        this.score = val.data.score;
+        this.kids = val.data.kids;
+        this.link = val.data.url;
+        this.creator = val.data.by;
+      }
     },
     async getData() {
       let url = `https://hacker-news.firebaseio.com/v0/item/${this.ids}.json?print=pretty`;
-      console.log(url);
+      //console.log(url);
       let data = await axios.get(url);
-      this.setData(data.data);
-      this.tf();
-      console.log("i amd here", data.data);
+      //console.log("here", data.data);
+      this.setData(data);
+      //this.tf();
+      //console.log("i amd here", data.data);
     },
   },
 };
@@ -104,11 +121,15 @@ hr {
   clear: both;
 }
 
-.title a {
+.ttl a {
   display: block;
   text-decoration: none;
   font-size: 17px;
   color: #34495e;
   line-height: 20px;
+}
+a {
+  text-decoration: none;
+  color: #34495e;
 }
 </style>

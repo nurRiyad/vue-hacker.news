@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Top from "../views/Top.vue";
 import New from "../views/New.vue";
+import ProfileDetail from "../views/ProfileDetail.vue";
+import Profile from "../views/Profile.vue";
 
 const routes = [
   {
@@ -12,6 +14,18 @@ const routes = [
     path: "/new",
     name: "New",
     component: New,
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+    props: true,
+  },
+  {
+    path: "/profile/:id",
+    name: "ProfileDetail",
+    component: ProfileDetail,
+    props: true,
   },
 ];
 
