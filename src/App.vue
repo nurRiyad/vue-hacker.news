@@ -1,7 +1,8 @@
 <template>
   <div id="wrapper">
     <div id="nav">
-      <router-link to="/">Top</router-link> |
+      <router-link to="/">Top</router-link>
+      <span id="divider">|</span>
       <router-link to="/new">New</router-link>
     </div>
     <router-view />
@@ -21,10 +22,16 @@
   padding: 30px;
   background-color: rgb(230, 113, 17);
 }
+#divider {
+  font-size: 30px;
+  margin: 10px;
+}
 
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+  font-size: 30px;
+  border-bottom: 2px solid rgb(0, 0, 0);
 }
 
 #nav a.router-link-exact-active {

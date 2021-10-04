@@ -12,7 +12,7 @@
           <span>by {{ creator }} </span>
         </router-link>
         <span class="comment"> || {{ tf }} ago || </span>
-        <span> Comments </span>
+        <span>{{ cmntCount }} Comments </span>
       </span>
     </div>
   </div>
@@ -24,16 +24,23 @@ export default {
   props: ["index", "ids"],
   data() {
     return {
-      title: null,
-      time: null,
-      score: null,
-      kids: null,
-      link: null,
-      creator: null,
+      title: "",
+      time: 0,
+      score: 0,
+      kids: 0,
+      link: "",
+      creator: "",
       id: this.ids,
     };
   },
   computed: {
+    cmntCount() {
+      let x = 0;
+      for (let kid in this.kids) {
+        if (kid) x += 1;
+      }
+      return x;
+    },
     tf() {
       let unixTime = this.time;
       let finaltime = "";
