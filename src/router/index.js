@@ -3,6 +3,7 @@ import Top from "../views/Top.vue";
 import New from "../views/New.vue";
 import ProfileDetail from "../views/ProfileDetail.vue";
 import Profile from "../views/Profile.vue";
+import Commnet from "../views/Comment.vue";
 
 const routes = [
   {
@@ -25,6 +26,12 @@ const routes = [
     path: "/profile/:id",
     name: "ProfileDetail",
     component: ProfileDetail,
+    props: true,
+  },
+  {
+    path: "/comment/:id",
+    name: "Comment",
+    component: Commnet,
     props: true,
   },
 ];

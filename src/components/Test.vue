@@ -11,8 +11,15 @@
         >
           <span>by {{ creator }} </span>
         </router-link>
-        <span class="comment"> || {{ tf }} ago || </span>
-        <span>{{ cmntCount }} Comments </span>
+        <span class="time"> || {{ tf }} ago || </span>
+        <router-link
+          :to="{
+            name: 'Comment',
+            params: { id: ids || '-' },
+          }"
+        >
+          <span>{{ cmntCount }} Comments </span>
+        </router-link>
       </span>
     </div>
   </div>
@@ -24,7 +31,7 @@ export default {
   props: ["index", "ids"],
   data() {
     return {
-      title: "",
+      title: "sdlfksdl",
       time: 0,
       score: 0,
       kids: 0,
@@ -57,9 +64,6 @@ export default {
       else if (m >= 1) finaltime = `${parseInt(m)} minutes`;
       else finaltime = `${parseInt(s)} seconds`;
       return finaltime;
-    },
-    userName() {
-      return this.creator;
     },
   },
   watch: {
@@ -124,7 +128,7 @@ hr {
   color: rgb(230, 113, 17);
 }
 
-.comment {
+.time {
   clear: both;
 }
 
