@@ -12,6 +12,10 @@ const routes = [
     component: Top,
   },
   {
+    path: "/top",
+    redirect: "/",
+  },
+  {
     path: "/new",
     name: "New",
     component: New,
@@ -37,6 +41,7 @@ const routes = [
 ];
 
 const router = createRouter({
+  base: process.env.NODE_ENV === "production" ? "/Hacker-News-Demo" : "",
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
