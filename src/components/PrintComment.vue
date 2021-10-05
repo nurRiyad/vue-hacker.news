@@ -1,6 +1,6 @@
 <template>
-  <div id="cmt">
-    <p><span v-html="text"></span></p>
+  <div v-if="text">
+    <p id="cmt"><span v-html="text"></span></p>
     <p id="by">by {{ creator }} || {{ tf }} age</p>
     <hr />
     <div id="child" v-for="kid in kids" :key="kid.key">
@@ -15,7 +15,7 @@ export default {
   props: ["id"],
   data() {
     return {
-      text: "",
+      text: "Comment Loading, Please Wait ...",
       time: 0,
       kids: [],
       creator: "",
@@ -77,12 +77,14 @@ export default {
 <style>
 #cmt {
   text-align: left;
-  padding: 5px;
+  padding: 10px;
 }
 #by {
   text-align: right;
+  padding: 10px;
+  font-size: small;
 }
 #child {
-  padding-left: 30px;
+  padding-left: 35px;
 }
 </style>

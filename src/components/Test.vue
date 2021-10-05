@@ -31,7 +31,7 @@ export default {
   props: ["index", "ids"],
   data() {
     return {
-      title: "sdlfksdl",
+      title: "Content Loading Please Wait ...",
       time: 0,
       score: 0,
       kids: 0,

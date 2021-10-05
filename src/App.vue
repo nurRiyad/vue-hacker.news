@@ -1,9 +1,14 @@
 <template>
   <div id="wrapper">
     <div id="nav">
-      <router-link to="/">Top</router-link>
-      <span id="divider">|</span>
-      <router-link to="/new">New</router-link>
+      <div>
+        <router-link to="/">Top</router-link>
+        <span id="divider">|</span>
+        <router-link to="/new">New</router-link>
+      </div>
+      <div id="name">
+        <p>HackerNewsDemo</p>
+      </div>
     </div>
     <router-view />
   </div>
@@ -21,16 +26,17 @@
 #nav {
   padding: 30px;
   background-color: rgb(230, 113, 17);
+  padding-bottom: 10px;
 }
 #divider {
-  font-size: 30px;
+  font-size: 20px;
   margin: 10px;
 }
 
 #nav a {
   font-weight: bold;
   color: #2c3e50;
-  font-size: 30px;
+  font-size: 20px;
   border-bottom: 2px solid rgb(0, 0, 0);
 }
 
@@ -69,5 +75,9 @@ button {
 button:hover {
   background-color: rgb(230, 113, 17);
   color: black;
+}
+#name p {
+  margin-bottom: 0;
+  font-size: small;
 }
 </style>

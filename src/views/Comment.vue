@@ -1,10 +1,12 @@
 <template>
   <div id="header">
     <h3>{{ title }}</h3>
-    <span
-      >Totall Points: {{ score }} || Created by {{ creator }} ||
-      {{ tf }} age</span
-    >
+    <div id="pad">
+      <span
+        >Totall Points: {{ score }} || Created by {{ creator }} ||
+        {{ tf }} age</span
+      >
+    </div>
     <hr />
   </div>
   <div v-for="id in kids" :key="id.key">
@@ -85,5 +87,9 @@ export default {
 #header {
   text-align: left;
   padding-left: 5px;
+}
+#pad {
+  padding-bottom: 15px;
+  font-size: small;
 }
 </style>
