@@ -5,7 +5,7 @@
     width="500"
     height="600"
   />
-  <h1>WTF are you doing Man, Just type the currect URL</h1>
+  <h1>WTF are you doing Man, Just type the correct URL</h1>
 </template>
 
 <script>
