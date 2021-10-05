@@ -4,6 +4,7 @@ import New from "../views/New.vue";
 import ProfileDetail from "../views/ProfileDetail.vue";
 import Profile from "../views/Profile.vue";
 import Commnet from "../views/Comment.vue";
+import NotFoundComponent from "../views/NotFoundComponent.vue";
 
 const routes = [
   {
@@ -37,6 +38,11 @@ const routes = [
     name: "Comment",
     component: Commnet,
     props: true,
+  },
+  {
+    path: "/:catchAll(.*)",
+    component: NotFoundComponent,
+    name: "NotFound",
   },
 ];
 
