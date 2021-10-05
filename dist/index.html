@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/Hacker-News-Demo/favicon.png"><title>hackernews-demo</title><link href="/Hacker-News-Demo/css/app.dd738eb9.css" rel="preload" as="style"><link href="/Hacker-News-Demo/js/app.d5514990.js" rel="preload" as="script"><link href="/Hacker-News-Demo/js/chunk-vendors.3d7f4b8b.js" rel="preload" as="script"><link href="/Hacker-News-Demo/css/app.dd738eb9.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but hackernews-demo doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><script>// Single Page Apps for GitHub Pages
+      // https://github.com/rafrex/spa-github-pages
+      // Copyright (c) 2016 Rafael Pedicini, licensed under the MIT License
+      // ----------------------------------------------------------------------
+      // This script checks to see if a redirect is present in the query string
+      // and converts it back into the correct url and adds it to the
+      // browser's history using window.history.replaceState(...),
+      // which won't cause the browser to attempt to load the new url.
+      // When the single page app is loaded further down in this file,
+      // the correct url will be waiting in the browser's history for
+      // the single page app to route accordingly.
+      (function (l) {
+        if (l.search) {
+          var q = {};
+          l.search
+            .slice(1)
+            .split("&")
+            .forEach(function (v) {
+              var a = v.split("=");
+              q[a[0]] = a.slice(1).join("=").replace(/~and~/g, "&");
+            });
+          if (q.p !== undefined) {
+            window.history.replaceState(
+              null,
+              null,
+              l.pathname.slice(0, -1) +
+                (q.p || "") +
+                (q.q ? "?" + q.q : "") +
+                l.hash
+            );
+          }
+        }
+      })(window.location);</script><div id="app"></div><script src="/Hacker-News-Demo/js/chunk-vendors.3d7f4b8b.js"></script><script src="/Hacker-News-Demo/js/app.d5514990.js"></script></body></html>
