@@ -1,7 +1,7 @@
 <template>
   <div v-if="text">
     <p id="cmt"><span v-html="text"></span></p>
-    <p id="by">by {{ creator }} || {{ tf }} age</p>
+    <p id="by">by {{ creator }} || {{ tf }} ago</p>
     <hr />
     <div id="child" v-for="kid in kids" :key="kid.key">
       <print-comment :id="kid"></print-comment>
