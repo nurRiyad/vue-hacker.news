@@ -1,12 +1,14 @@
 {
   "name": "hacker-news",
-  "version": "0.0.0",
+  "version": "v1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "pinia": "^2.0.23",
@@ -14,9 +16,11 @@
     "vue-router": "^4.1.5"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^0.29.4",
     "@types/node": "^16.11.68",
     "@vitejs/plugin-vue": "^3.1.2",
     "@vue/tsconfig": "^0.1.3",
+    "eslint": "^8.27.0",
     "npm-run-all": "^4.1.5",
     "typescript": "~4.7.4",
     "vite": "^3.1.8",
