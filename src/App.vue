@@ -4,7 +4,7 @@ import NavbarCom from '@/components/NavbarCom.vue'
 </script>
 
 <template>
-  <div>
+  <div class="min-h-screen">
     <NavbarCom />
     <RouterView />
     <FooterCom />

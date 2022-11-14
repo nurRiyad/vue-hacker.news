@@ -1,3 +1,5 @@
 <template>
-  <div>Top Page</div>
+  <div>
+    Top Page
+  </div>
 </template>
