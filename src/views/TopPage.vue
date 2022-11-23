@@ -6,7 +6,9 @@ import NewItems from '@/components/NewItems.vue'
 </script>
 
 <template>
-  <div class="w-full bg-white">
-    <NewItems v-for="n in 10" :key="n" />
+  <div class="flex flex-col bg-white">
+    <h1 class="flex-grow">
+      <NewItems />
+    </h1>
   </div>
 </template>

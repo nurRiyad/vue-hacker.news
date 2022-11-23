@@ -1,5 +1,5 @@
 <template>
-  <div class="flex space-x-5  border-b-2  mt-1 mt-0">
+  <div class="flex space-x-5  border-b-2  mt-0">
     <div class="flex justify-center items-center h-auto text-3xl p-5 font-sans font-semibold text-blue-700">
       10
     </div>
