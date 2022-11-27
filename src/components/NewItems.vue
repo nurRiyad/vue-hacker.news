@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from '@vue/reactivity'
 import { useFetch } from '@vueuse/core'
-import { onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
+import type { News } from '@/types/News'
 
 // set props
 interface Props {
@@ -15,32 +15,51 @@ const title = ref('no title')
 const score = ref(0)
 const author = ref('no author available')
 const time = ref(0)
+const url = ref('')
 
 const { data: resp } = await useFetch(`https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`)
-const news = ref(JSON.parse(resp.value as string))
+const news = ref<News>(JSON.parse(resp.value as string))
 
 title.value = news.value.title
 score.value = news.value.score
 author.value = news.value.by
 time.value = news.value.time
+url.value = news.value.url
+
+const getDomainName = computed(() => {
+  if (url.value) {
+    const splitedUrl = url.value.split('/')
+    if (splitedUrl.length >= 3)
+      return splitedUrl[2]
+  }
+  return ''
+})
+
+const isValidUrl = computed(() => {
+  if (getDomainName.value === '')
+    return false
+  else return true
+})
 </script>
 
 <template>
-  <div class="flex space-x-5  border-b-2  mt-0">
-    <div class="flex justify-center items-center h-auto p-5 font-sans font-semibold text-blue-700">
-      {{ score }}
+  <div class="flex border-b-2">
+    <div class="flex justify-center items-center w-20 p-5">
+      <p class="text-center font-semibold text-blue-700 text-xl">
+        {{ score }}
+      </p>
     </div>
     <div class="flex flex-col justify-center ">
       <div class="flex items-center font-mono space-x-1">
-        <a href="" class="font-medium ">
+        <a :href="url" target="_blank" class="font-medium" :class="{ 'hover:underline': isValidUrl }">
           {{ title }}
         </a>
-        <p class="text-sm text-slate-500">
-          (google.com)
+        <p v-if="isValidUrl" class="text-sm text-slate-500">
+          ({{ getDomainName }})
         </p>
       </div>
-      <div class="flex text-sm text-slate-500">
-        <p>by {{ author }}</p>
+      <div class="flex text-sm text-slate-500  ">
+        <a href="">by <span class="hover:underline">{{ author }}</span></a>
         <p class="px-4">
           |
         </p>
