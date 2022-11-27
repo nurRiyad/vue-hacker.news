@@ -9,8 +9,8 @@ export const useNewStore = defineStore('newsStore', () => {
 
   const getTopNewsList = async () => {
     try {
-      const { data } = await useFetch('https://hacker-news.firebaseio.com/v0/topstories.json')
-      topNewsList.value = data.value as Array<number>
+      const { data } = await useFetch('https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty')
+      topNewsList.value = JSON.parse(data.value as string) as Array<number>
     }
     catch (error) {
       console.log(error)
@@ -19,8 +19,8 @@ export const useNewStore = defineStore('newsStore', () => {
 
   const getNewNewsList = async () => {
     try {
-      const { data } = await useFetch('https://hacker-news.firebaseio.com/v0/newstories.json')
-      newNewsList.value = data.value as Array<number>
+      const { data } = await useFetch('https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty')
+      newNewsList.value = JSON.parse(data.value as string) as Array<number>
     }
     catch (error) {
       console.log(error)
@@ -29,8 +29,8 @@ export const useNewStore = defineStore('newsStore', () => {
 
   const getBestNewsList = async () => {
     try {
-      const { data } = await useFetch('https://hacker-news.firebaseio.com/v0/beststories.json')
-      bestNewsList.value = data.value as Array<number>
+      const { data } = await useFetch('https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty')
+      bestNewsList.value = JSON.parse(data.value as string) as Array<number>
     }
     catch (error) {
       console.log(error)
