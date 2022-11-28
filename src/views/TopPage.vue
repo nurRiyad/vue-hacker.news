@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import NewsItemLoader from '@/components/NewsItemLoader.vue'
 import { useNewStore } from '@/stores/news'
 import NewItems from '@/components/NewItems.vue'
 
 const newsStore = useNewStore()
-const { topNewsList } = storeToRefs(newsStore)
+const { topNewsList, isNewsListFetching } = storeToRefs(newsStore)
 
 const currentPage = ref(1)
 const totalPage = computed(() => {
@@ -29,18 +30,26 @@ const filteredNews = computed(() => {
 
 <template>
   <div class="flex flex-col bg-white h-full w-full">
-    <div v-for="n in filteredNews" :key="n" class="flex-grow">
-      <Suspense>
-        <template #default>
-          <NewItems :id="n" />
-        </template>
-        <template #fallback>
-          Loading...
-        </template>
-      </Suspense>
-    </div>
-    <div class="text-center my-2 py-2 ">
-      <p> {{ currentPage }}/{{ totalPage }}</p>
-    </div>
+    <template v-if="isNewsListFetching">
+      <div v-for="n in 10" :key="n" class="flex-grow">
+        <NewsItemLoader :id="n" />
+      </div>
+      <NewsItemLoader />
+    </template>
+    <template v-else>
+      <div v-for="n in filteredNews" :key="n" class="flex-grow">
+        <Suspense>
+          <template #default>
+            <NewItems :id="n" />
+          </template>
+          <template #fallback>
+            <NewsItemLoader />
+          </template>
+        </Suspense>
+      </div>
+      <div class="text-center my-2 py-2 ">
+        <p> {{ currentPage }}/{{ totalPage }}</p>
+      </div>
+    </template>
   </div>
 </template>

@@ -2,6 +2,7 @@
 import { useFetch } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import type { News } from '@/types/News'
+import { timeDifferene } from '@/utils/time'
 
 // set props
 interface Props {
@@ -35,6 +36,10 @@ const getDomainName = computed(() => {
   return ''
 })
 
+const creatTime = computed(() => {
+  return timeDifferene(time.value)
+})
+
 const isValidUrl = computed(() => {
   if (getDomainName.value === '')
     return false
@@ -45,13 +50,13 @@ const isValidUrl = computed(() => {
 <template>
   <div class="flex border-b-2">
     <div class="flex justify-center items-center w-20 p-5">
-      <p class="text-center font-semibold text-blue-700 text-xl">
+      <p class="text-center font-semibold text-sky-700 text-xl">
         {{ score }}
       </p>
     </div>
     <div class="flex flex-col justify-center ">
       <div class="flex items-center font-mono space-x-1">
-        <a :href="url" target="_blank" class="font-medium" :class="{ 'hover:underline': isValidUrl }">
+        <a :href="url" target="_blank" class="font-medium hover:decoration-sky-500" :class="{ 'hover:underline': isValidUrl }">
           {{ title }}
         </a>
         <p v-if="isValidUrl" class="text-sm text-slate-500">
@@ -59,11 +64,11 @@ const isValidUrl = computed(() => {
         </p>
       </div>
       <div class="flex text-sm text-slate-500  ">
-        <a href="">by <span class="hover:underline">{{ author }}</span></a>
+        <a href="">by <span class="hover:underline hover:decoration-sky-500">{{ author }}</span></a>
         <p class="px-4">
           |
         </p>
-        <p>{{ time }} ago</p>
+        <p>created {{ creatTime }} ago</p>
       </div>
     </div>
   </div>
