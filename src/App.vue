@@ -6,9 +6,7 @@ import { useNewStore } from '@/stores/news'
 
 const newsStore = useNewStore()
 onMounted(() => {
-  newsStore.getBestNewsList()
-  newsStore.getNewNewsList()
-  newsStore.getTopNewsList()
+  newsStore.fetchAllNews()
 })
 </script>
 

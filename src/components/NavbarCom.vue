@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <div class="p-5 bg-blue-800 text-gray-300 font-mono">
+  <div class="p-5 bg-sky-700 text-gray-300 font-mono">
     <div class="flex flex-row justify-between container mx-auto max-w-5xl">
       <!-- Left navbar -->
       <div class="flex flex-row space-x-4">
@@ -28,7 +28,7 @@ import { RouterLink } from 'vue-router'
       </div>
       <!-- Right Navbar -->
       <div class="flex flex-row space-x-4">
-        <a href="https://github.com/nurRiyad" class="hover:text-white hover:font-semibold">
+        <a href="https://nurriyad.xyz" target="_blank" class="hover:text-white hover:font-semibold">
           Build by Riyad
         </a>
       </div>

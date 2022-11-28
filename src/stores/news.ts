@@ -6,6 +6,7 @@ export const useNewStore = defineStore('newsStore', () => {
   const topNewsList = ref<Array<number>>([])
   const newNewsList = ref<Array<number>>([])
   const bestNewsList = ref<Array<number>>([])
+  const isNewsListFetching = ref<boolean>(false)
 
   const getTopNewsList = async () => {
     try {
@@ -37,5 +38,17 @@ export const useNewStore = defineStore('newsStore', () => {
     }
   }
 
-  return { topNewsList, newNewsList, bestNewsList, getTopNewsList, getNewNewsList, getBestNewsList }
+  const fetchAllNews = async () => {
+    try {
+      isNewsListFetching.value = true
+
+      await Promise.all([getTopNewsList(), getBestNewsList(), getNewNewsList()])
+    }
+    catch (error) {
+      console.log(error)
+    }
+    isNewsListFetching.value = false
+  }
+
+  return { topNewsList, newNewsList, bestNewsList, isNewsListFetching, getTopNewsList, getNewNewsList, getBestNewsList, fetchAllNews }
 })
