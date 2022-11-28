@@ -54,9 +54,9 @@ const isValidUrl = computed(() => {
         {{ score }}
       </p>
     </div>
-    <div class="flex flex-col justify-center ">
-      <div class="flex items-center font-mono space-x-1">
-        <a :href="url" target="_blank" class="font-medium hover:decoration-sky-500" :class="{ 'hover:underline': isValidUrl }">
+    <div class="flex flex-col justify-center overflow-hidden truncate">
+      <div class="flex items-center font-mono space-x-1 ">
+        <a :href="url" target="_blank" class="font-medium hover:decoration-sky-500 truncate" :class="{ 'hover:underline': isValidUrl }">
           {{ title }}
         </a>
         <p v-if="isValidUrl" class="text-sm text-slate-500">
