@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 
 <template>
   <div class="p-5 bg-sky-700 text-gray-300 font-mono">
-    <div class="flex flex-row justify-between container mx-auto max-w-5xl">
+    <div class="flex flex-row justify-between container mx-auto max-w-6xl">
       <!-- Left navbar -->
       <div class="flex flex-row space-x-4">
         <RouterLink to="/">
@@ -28,7 +28,7 @@ import { RouterLink } from 'vue-router'
       </div>
       <!-- Right Navbar -->
       <div class="flex flex-row space-x-4">
-        <a href="https://nurriyad.xyz" target="_blank" class="hover:text-white hover:font-semibold">
+        <a href="https://nurriyad.xyz" target="_blank" class="hover:text-white hover:font-semibold hover:underline">
           Build by Riyad
         </a>
       </div>

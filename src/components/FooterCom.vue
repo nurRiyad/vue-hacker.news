@@ -5,7 +5,7 @@ import LinkedIn from './icons/LinkedIn.vue'
 
 <template>
   <div class="py-2  bg-sky-700 text-gray-300 font-mono">
-    <div class="flex flex-row justify-center container mx-auto max-w-5xl space-x-5">
+    <div class="flex flex-row justify-center container mx-auto max-w-6xl space-x-5">
       <div class="flex justify-center items-center space-x-2">
         <a href="http://github.com/nurriyad">
           <GithubVue :width="20" />

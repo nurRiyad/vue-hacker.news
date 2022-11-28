@@ -4,6 +4,8 @@ import { storeToRefs } from 'pinia'
 import NewsItemLoader from '@/components/NewsItemLoader.vue'
 import { useNewStore } from '@/stores/news'
 import NewItems from '@/components/NewItems.vue'
+import IconNext from '@/components/icons/Next.vue'
+import IconPrevious from '@/components/icons/Previous.vue'
 
 const newsStore = useNewStore()
 const { topNewsList, isNewsListFetching } = storeToRefs(newsStore)
@@ -26,6 +28,16 @@ const filteredNews = computed(() => {
     else return false
   })
 })
+
+const onNextClick = () => {
+  if (currentPage.value !== totalPage.value)
+    currentPage.value += 1
+}
+
+const onPreviousClick = () => {
+  if (currentPage.value !== 1)
+    currentPage.value -= 1
+}
 </script>
 
 <template>
@@ -47,8 +59,14 @@ const filteredNews = computed(() => {
           </template>
         </Suspense>
       </div>
-      <div class="text-center my-2 py-2 ">
+      <div class="flex justify-center items-center text-center my-2 py-2 space-x-3">
+        <button :disabled="currentPage === 1" @click="onPreviousClick">
+          <IconPrevious :width="20" />
+        </button>
         <p> {{ currentPage }}/{{ totalPage }}</p>
+        <button :disabled="currentPage === totalPage" @click="onNextClick">
+          <IconNext />
+        </button>
       </div>
     </template>
   </div>
