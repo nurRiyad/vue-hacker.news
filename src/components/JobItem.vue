@@ -64,7 +64,9 @@ const isValidUrl = computed(() => {
         </p>
       </div>
       <div class="flex text-sm text-slate-500  ">
-        <a href="">by <span class="hover:underline hover:decoration-sky-500">{{ author }}</span></a>
+        <router-link :to="`/user/${author}`">
+          by <span class="hover:underline hover:decoration-sky-500">{{ author }}</span>
+        </router-link>
         <p class="px-4">
           |
         </p>
