@@ -16,6 +16,9 @@ import { RouterLink } from 'vue-router'
         <RouterLink to="/new" class="hover:text-white hover:font-semibold">
           New
         </RouterLink>
+        <RouterLink to="/best" class="hover:text-white hover:font-semibold">
+          Best
+        </RouterLink>
         <RouterLink to="/show" class="hover:text-white hover:font-semibold">
           Show
         </RouterLink>

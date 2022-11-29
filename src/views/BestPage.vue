@@ -8,11 +8,11 @@ import IconNext from '@/components/icons/Next.vue'
 import IconPrevious from '@/components/icons/Previous.vue'
 
 const newsStore = useNewStore()
-const { newNewsList, isNewsListFetching } = storeToRefs(newsStore)
+const { bestNewsList, isNewsListFetching } = storeToRefs(newsStore)
 
 const currentPage = ref(1)
 const totalPage = computed(() => {
-  const totalNews = newNewsList.value.length
+  const totalNews = bestNewsList.value.length
   if (totalNews % 20 === 0)
     return totalNews / 20
   else return Math.floor(totalNews / 20) + 1
@@ -22,7 +22,7 @@ const filteredNews = computed(() => {
   const fst = (currentPage.value - 1) * 20
   const lst = (currentPage.value * 20) - 1
 
-  return newNewsList.value.filter((val, idx) => {
+  return bestNewsList.value.filter((val, idx) => {
     if (idx <= lst && idx >= fst)
       return true
     else return false
