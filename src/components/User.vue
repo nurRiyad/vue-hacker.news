@@ -36,7 +36,7 @@ time.value = news.value.created
     <p>Created: {{ coutDif }}</p>
     <p>About: </p>
     <pre class="border p-2">
-    <div v-html="about" />
+    <div class="overflow-auto" v-html="about" />
   </pre>
   </div>
 </template>

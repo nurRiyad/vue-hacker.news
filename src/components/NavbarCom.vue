@@ -32,7 +32,7 @@ import { RouterLink } from 'vue-router'
       <!-- Right Navbar -->
       <div class="flex flex-row space-x-4">
         <a href="https://nurriyad.xyz" target="_blank" class="hover:text-white hover:font-semibold hover:underline">
-          Build by Riyad
+          Built by Riyad
         </a>
       </div>
     </div>
