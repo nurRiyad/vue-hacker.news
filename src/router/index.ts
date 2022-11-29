@@ -4,6 +4,7 @@ import NewPage from '@/views/NewPage.vue'
 import ShowPage from '@/views/ShowPage.vue'
 import AskPage from '@/views/AskPage.vue'
 import JobsPage from '@/views/JobsPage.vue'
+import BestPage from '@/views/BestPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,11 @@ const router = createRouter({
       path: '/new',
       name: 'newPage',
       component: NewPage,
+    },
+    {
+      path: '/best',
+      name: 'bestPage',
+      component: BestPage,
     },
     {
       path: '/show',
