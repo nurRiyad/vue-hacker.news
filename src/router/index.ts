@@ -5,6 +5,7 @@ import ShowPage from '@/views/ShowPage.vue'
 import AskPage from '@/views/AskPage.vue'
 import JobsPage from '@/views/JobsPage.vue'
 import BestPage from '@/views/BestPage.vue'
+import UserPage from '@/views/UserPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/jobs',
       name: 'jobsPage',
       component: JobsPage,
+    },
+    {
+      path: '/user/:userid',
+      name: 'userPage',
+      component: UserPage,
     },
   ],
 })
