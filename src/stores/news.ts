@@ -6,6 +6,9 @@ export const useNewStore = defineStore('newsStore', () => {
   const topNewsList = ref<Array<number>>([])
   const newNewsList = ref<Array<number>>([])
   const bestNewsList = ref<Array<number>>([])
+  const topAsk = ref<Array<number>>([])
+  const topShow = ref<Array<number>>([])
+  const topJobs = ref<Array<number>>([])
   const isNewsListFetching = ref<boolean>(false)
 
   const getTopNewsList = async () => {
@@ -38,11 +41,41 @@ export const useNewStore = defineStore('newsStore', () => {
     }
   }
 
+  const getTopAsk = async () => {
+    try {
+      const { data } = await useFetch('https://hacker-news.firebaseio.com/v0/askstories.json?print=pretty')
+      topAsk.value = JSON.parse(data.value as string) as Array<number>
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getTopJobs = async () => {
+    try {
+      const { data } = await useFetch('https://hacker-news.firebaseio.com/v0/jobstories.json?print=pretty')
+      topJobs.value = JSON.parse(data.value as string) as Array<number>
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getTopShow = async () => {
+    try {
+      const { data } = await useFetch('https://hacker-news.firebaseio.com/v0/showstories.json?print=pretty')
+      topShow.value = JSON.parse(data.value as string) as Array<number>
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
   const fetchAllNews = async () => {
     try {
       isNewsListFetching.value = true
 
-      await Promise.all([getTopNewsList(), getBestNewsList(), getNewNewsList()])
+      await Promise.all([getTopNewsList(), getBestNewsList(), getNewNewsList(), getTopAsk(), getTopShow(), getTopJobs()])
     }
     catch (error) {
       console.log(error)
@@ -50,5 +83,5 @@ export const useNewStore = defineStore('newsStore', () => {
     isNewsListFetching.value = false
   }
 
-  return { topNewsList, newNewsList, bestNewsList, isNewsListFetching, getTopNewsList, getNewNewsList, getBestNewsList, fetchAllNews }
+  return { topNewsList, newNewsList, bestNewsList, topAsk, topJobs, topShow, isNewsListFetching, fetchAllNews }
 })

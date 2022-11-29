@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import type { News } from '@/types/News'
+import type { Jobs } from '@/types/Jobs'
 import { timeDifferene } from '@/utils/time'
 
 // set props
@@ -16,34 +16,17 @@ const title = ref('no title')
 const score = ref(0)
 const author = ref('no author available')
 const time = ref(0)
-const url = ref('')
 
 const { data: resp } = await useFetch(`https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`)
-const news = ref<News>(JSON.parse(resp.value as string))
+const news = ref<Jobs>(JSON.parse(resp.value as string))
 
 title.value = news.value.title
 score.value = news.value.score
 author.value = news.value.by
 time.value = news.value.time
-url.value = news.value.url
-
-const getDomainName = computed(() => {
-  if (url.value) {
-    const splitedUrl = url.value.split('/')
-    if (splitedUrl.length >= 3)
-      return splitedUrl[2]
-  }
-  return ''
-})
 
 const creatTime = computed(() => {
   return timeDifferene(time.value)
-})
-
-const isValidUrl = computed(() => {
-  if (getDomainName.value === '')
-    return false
-  else return true
 })
 </script>
 
@@ -56,12 +39,9 @@ const isValidUrl = computed(() => {
     </div>
     <div class="flex flex-col justify-center overflow-hidden truncate">
       <div class="flex items-center font-mono space-x-1 ">
-        <a :href="url" target="_blank" class="font-medium hover:decoration-sky-500 truncate" :class="{ 'hover:underline': isValidUrl }">
+        <a href="#" target="_blank" class="font-medium hover:decoration-sky-500 truncate hover:underline">
           {{ title }}
         </a>
-        <p v-if="isValidUrl" class="text-sm text-slate-500">
-          ({{ getDomainName }})
-        </p>
       </div>
       <div class="flex text-sm text-slate-500  ">
         <a href="">by <span class="hover:underline hover:decoration-sky-500">{{ author }}</span></a>
