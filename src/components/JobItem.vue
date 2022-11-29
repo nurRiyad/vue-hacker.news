@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import type { News } from '@/types/News'
+import type { Jobs } from '@/types/Jobs'
 import { timeDifferene } from '@/utils/time'
 
 // set props
@@ -19,7 +19,7 @@ const time = ref(0)
 const url = ref('')
 
 const { data: resp } = await useFetch(`https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`)
-const news = ref<News>(JSON.parse(resp.value as string))
+const news = ref<Jobs>(JSON.parse(resp.value as string))
 
 title.value = news.value.title
 score.value = news.value.score
