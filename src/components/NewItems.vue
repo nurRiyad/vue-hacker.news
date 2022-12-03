@@ -12,6 +12,9 @@ const props = withDefaults(defineProps<Props>(), {
   id: NaN,
 })
 
+// set emet
+const emit = defineEmits(['kids'])
+
 const title = ref('no title')
 const score = ref(0)
 const author = ref('no author available')
@@ -26,6 +29,8 @@ score.value = news.value.score
 author.value = news.value.by
 time.value = news.value.time
 url.value = news.value.url
+
+emit('kids', news.value.kids || [])
 
 const getDomainName = computed(() => {
   if (url.value) {
