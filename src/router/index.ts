@@ -47,7 +47,7 @@ const router = createRouter({
       component: UserPage,
     },
     {
-      path: '/news/:newid/details',
+      path: '/news/:newsid/details',
       name: 'newsDetails',
       component: NewsDetails,
     },
