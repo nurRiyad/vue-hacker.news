@@ -36,6 +36,14 @@ const getDomainName = computed(() => {
   return ''
 })
 
+const countCommet = computed(() => {
+  if (news.value?.kids?.length <= 1)
+    return `${news.value?.kids?.length} Comment`
+  else if (news.value?.kids?.length >= 1)
+    return `${news.value?.kids?.length} Comments`
+  else return '0 Comment'
+})
+
 const creatTime = computed(() => {
   return timeDifferene(time.value)
 })
@@ -66,6 +74,14 @@ const isValidUrl = computed(() => {
       <div class="flex text-sm text-slate-500  ">
         <router-link :to="`/user/${author}`">
           by <span class="hover:underline hover:decoration-sky-500">{{ author }}</span>
+        </router-link>
+        <p class="px-4">
+          |
+        </p>
+        <router-link :to="`/news/${id}/details`">
+          <p class="hover:underline hover:decoration-sky-500">
+            {{ countCommet }}
+          </p>
         </router-link>
         <p class="px-4">
           |

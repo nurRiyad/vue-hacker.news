@@ -6,6 +6,7 @@ import AskPage from '@/views/AskPage.vue'
 import JobsPage from '@/views/JobsPage.vue'
 import BestPage from '@/views/BestPage.vue'
 import UserPage from '@/views/UserPage.vue'
+import NewsDetails from '@/views/NewsDetails.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
       path: '/user/:userid',
       name: 'userPage',
       component: UserPage,
+    },
+    {
+      path: '/news/:newid/details',
+      name: 'newsDetails',
+      component: NewsDetails,
     },
   ],
 })

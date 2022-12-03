@@ -65,7 +65,7 @@ const onPreviousClick = () => {
         </button>
         <p> {{ currentPage }}/{{ totalPage }}</p>
         <button :disabled="currentPage === totalPage" @click="onNextClick">
-          <IconNext />
+          <IconNext :width="20" />
         </button>
       </div>
     </template>
