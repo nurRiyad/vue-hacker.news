@@ -9,6 +9,7 @@ import UserPage from '@/views/UserPage.vue'
 import NewsDetails from '@/views/NewsDetails.vue'
 import ShowDetails from '@/views/ShowDetails.vue'
 import AskDetails from '@/views/AskDetails.vue'
+import NotFound from '@/views/NotFount.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +63,11 @@ const router = createRouter({
       path: '/ask/:newsid/details',
       name: 'askDetails',
       component: AskDetails,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFound,
     },
   ],
 })
