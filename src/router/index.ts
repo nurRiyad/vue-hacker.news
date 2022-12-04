@@ -7,6 +7,7 @@ import JobsPage from '@/views/JobsPage.vue'
 import BestPage from '@/views/BestPage.vue'
 import UserPage from '@/views/UserPage.vue'
 import NewsDetails from '@/views/NewsDetails.vue'
+import ShowDetails from '@/views/ShowDetails.vue'
 import AskDetails from '@/views/AskDetails.vue'
 
 const router = createRouter({
@@ -55,7 +56,7 @@ const router = createRouter({
     {
       path: '/show/:newsid/details',
       name: 'showDetails',
-      component: NewsDetails,
+      component: ShowDetails,
     },
     {
       path: '/ask/:newsid/details',
