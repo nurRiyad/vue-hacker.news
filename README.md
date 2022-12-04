@@ -1,40 +1,53 @@
-# .
+# Hacker News 
 
-This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
+### Built with 
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+<p align="center">
+    <img width="200" src="./src/assets/previews/logo.png">
+</p>
 
-## Type Support for `.vue` Imports in TS
+Hacker News clone built with [VUE3](https://vuejs.org), [Pinia](https://pinia.vuejs.org/), [Tailwind](https://tailwindcss.com/) & [VueUse](https://vueuse.org/)
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+<p align="center">
+  <a href="https://hnews-nurriyad.netlify.com" target="_blank">
+    <img width="1090" src="./src/assets/previews/rootpage.png">
+    <img width="1090" src="./src/assets/previews/commentpage.png">
+    <br>
+    Live Demo
+  </a>
+</p>
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Demo
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+https://hnews.nurriyad.netlify.com
 
-## Customize configuration
+> Hosted on [Netlify](https://netlify.com/): `npm run build`
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-## Project Setup
+## Features
 
-```sh
-npm install
-```
+- Client Side Rendering
+- Vite-based hot module replacement (HMR) dev environment
+- Deploys anywhere with zero config Netlify
+- Content loader 
+- Lazy load comment
 
-### Compile and Hot-Reload for Development
+## Build Setup
 
-```sh
+**Requires Node.js 16+**
+
+``` bash
+# install dependencies
+npm install # or yarn
+
+# serve in dev mode, with hot reload at localhost:3000
 npm run dev
-```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
+# build for production (server-side rendering)
 npm run build
+
+# serve in production mode (server-side rendering)
+npm start
+
 ```
