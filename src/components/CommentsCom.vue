@@ -3,6 +3,8 @@ import { useFetch } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import type { Comment } from '@/types/Comment'
 import { timeDifferene } from '@/utils/time'
+import NewsItemLoader from '@/components/NewsItemLoader.vue'
+import CommentsCom from '@/components/CommentsCom.vue'
 
 // set props
 interface Props {
@@ -25,7 +27,7 @@ const ttlComment = computed(() => {
 })
 
 const commnetData = computed(() => {
-  return news.value?.text || ''
+  return news.value?.text || 'No comment availabe'
 })
 
 const showReply = ref(false)
