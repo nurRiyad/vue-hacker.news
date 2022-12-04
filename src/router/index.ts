@@ -51,6 +51,11 @@ const router = createRouter({
       name: 'newsDetails',
       component: NewsDetails,
     },
+    {
+      path: '/show/:newsid/details',
+      name: 'showDetails',
+      component: NewsDetails,
+    },
   ],
 })
 

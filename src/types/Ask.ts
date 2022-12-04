@@ -8,4 +8,5 @@ export interface Ask {
   time: number
   title: string
   type: string
+
 }
