@@ -11,8 +11,8 @@ Hacker News clone built with [VUE3](https://vuejs.org), [Pinia](https://pinia.vu
 
 <p align="center">
   <a href="https://hnews-nurriyad.netlify.com" target="_blank">
-    <img width="1090" src="./src/assets/previews/rootpage.png">
-    <img width="1090" src="./src/assets/previews/commentpage.png">
+    <img width="1090" src="./src/assets/previews/root.png">
+    <img width="1090" src="./src/assets/previews/comment.png">
     <br>
     Live Demo
   </a>
@@ -20,7 +20,7 @@ Hacker News clone built with [VUE3](https://vuejs.org), [Pinia](https://pinia.vu
 
 ## Demo
 
-https://hnews.nurriyad.netlify.com
+https://hnews-nurriyad.netlify.app/
 
 > Hosted on [Netlify](https://netlify.com/): `npm run build`
 
