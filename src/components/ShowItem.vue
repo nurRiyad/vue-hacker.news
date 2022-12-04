@@ -12,6 +12,9 @@ const props = withDefaults(defineProps<Props>(), {
   id: NaN,
 })
 
+// set emet
+const emit = defineEmits(['kids'])
+
 const title = ref('no title')
 const score = ref(0)
 const author = ref('no author available')
@@ -24,6 +27,8 @@ title.value = news.value.title
 score.value = news.value.score
 author.value = news.value.by
 time.value = news.value.time
+
+emit('kids', news.value.kids || [])
 
 const url = computed(() => news.value?.url || '#')
 const countCommet = computed(() => {
