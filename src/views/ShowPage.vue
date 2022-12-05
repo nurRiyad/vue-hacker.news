@@ -6,13 +6,14 @@ import { useNewStore } from '@/stores/news'
 import ShowItem from '@/components/ShowItem.vue'
 import IconNext from '@/components/icons/Next.vue'
 import IconPrevious from '@/components/icons/Previous.vue'
+import EmptyNews from '@/components/EmptyNews.vue'
 
 const newsStore = useNewStore()
 const { topShow, isNewsListFetching } = storeToRefs(newsStore)
 
 const currentPage = ref(1)
 const totalPage = computed(() => {
-  const totalNews = topShow.value.length
+  const totalNews = topShow.value?.length ?? 1
   if (totalNews % 20 === 0)
     return totalNews / 20
   else return Math.floor(totalNews / 20) + 1
@@ -22,11 +23,17 @@ const filteredNews = computed(() => {
   const fst = (currentPage.value - 1) * 20
   const lst = (currentPage.value * 20) - 1
 
-  return topShow.value.filter((val, idx) => {
+  return topShow.value?.filter((val, idx) => {
     if (idx <= lst && idx >= fst)
       return true
     else return false
   })
+})
+
+const isNewsEmpty = computed(() => {
+  if (filteredNews.value?.length > 0)
+    return false
+  else return true
 })
 
 const onNextClick = () => {
@@ -58,6 +65,9 @@ const onPreviousClick = () => {
             <NewsItemLoader />
           </template>
         </Suspense>
+      </div>
+      <div v-if="(isNewsEmpty)" class="flex-grow">
+        <EmptyNews />
       </div>
       <div class="flex justify-center items-center text-center my-2 py-2 space-x-3">
         <button :disabled="currentPage === 1" @click="onPreviousClick">
