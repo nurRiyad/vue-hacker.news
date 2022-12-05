@@ -7,7 +7,7 @@
     <img width="200" src="./src/assets/previews/logo.png">
 </p>
 
-Hacker News clone built with [VUE3](https://vuejs.org), [Pinia](https://pinia.vuejs.org/), [Tailwind](https://tailwindcss.com/) & [VueUse](https://vueuse.org/)
+Hacker News clone built with [Vue3](https://vuejs.org), [Pinia](https://pinia.vuejs.org/), [Tailwind](https://tailwindcss.com/) & [VueUse](https://vueuse.org/)
 
 <p align="center">
   <a href="https://hnews-nurriyad.netlify.com" target="_blank">
@@ -39,15 +39,15 @@ https://hnews-nurriyad.netlify.app/
 
 ``` bash
 # install dependencies
-npm install # or yarn
+npm install 
 
-# serve in dev mode, with hot reload at localhost:3000
+# serve in dev mode, with hot reload at localhost:5173
 npm run dev
 
-# build for production (server-side rendering)
+# build for production 
 npm run build
 
-# serve in production mode (server-side rendering)
-npm start
+# serve in production mode 
+npm run preview
 
 ```
