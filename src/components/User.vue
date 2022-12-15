@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
-import { ref } from 'vue'
-import { computed } from '@vue/reactivity'
+import { computed, ref } from 'vue'
 import type { User } from '@/types/User'
 import { timeDifferene } from '@/utils/time'
 
