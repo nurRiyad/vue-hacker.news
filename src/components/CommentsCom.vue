@@ -41,13 +41,13 @@ const kids = computed(() => {
   <div class="bg-white px-5 pt-5 pb-2 text-sm">
     <p class="mb-2 border-b">
       <RouterLink :to="`/user/${news.by || '-'}`">
-        <span class="hover:underline text-sky-600">{{ news.by || '-' }}</span>
+        <span class="hover:underline text-orange-600">{{ news.by || '-' }}</span>
       </RouterLink>
       | {{ countTimedif }} |
       <span>{{ ttlComment }} Comment</span>
     </p>
     <div class="text-xs text-slate-600 " v-html="commnetData" />
-    <div v-if="(ttlComment > 1)" class="text-xs text-sky-600 pt-2 cursor-pointer hover:underline">
+    <div v-if="(ttlComment > 1)" class="text-xs text-orange-600 pt-2 cursor-pointer hover:underline">
       <p v-if="showReply" @click="(showReply = !showReply)">
         Hide Comment [-]
       </p>
