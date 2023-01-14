@@ -47,7 +47,7 @@ const creatTime = computed(() => {
 <template>
   <div class="flex border-b-2">
     <div class="flex justify-center items-center w-20 p-5">
-      <p class="text-center font-semibold text-sky-700 text-xl">
+      <p class="text-center font-semibold text-[#f3621d] text-xl">
         {{ score }}
       </p>
     </div>

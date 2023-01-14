@@ -13,9 +13,9 @@ const routeName = computed(() => route.name || '')
       <!-- Left navbar -->
       <div class="flex flex-row space-x-4">
         <RouterLink to="/">
-          <!-- <img class="w-10" src="@/assets/logo/hackerNews.png" alt="hacker new logo"> -->
+          
           <div class="flex">
-            <img class="sm:hidden w-10 object-cover
+            <img class="sm:hidden w-8 object-cover
             " src="@/assets/logo/hackerNews.png" alt="hackerNew logo">
             <p class="hidden text-xl font-bold sm:block" :class="{ underline: routeName === 'topNews' }">HackerNews</p>
           </div>
