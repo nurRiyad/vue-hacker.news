@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.5.0",
+    "@vueuse/head": "^1.0.22",
     "moment": "^2.29.4",
     "pinia": "^2.0.23",
     "vue": "^3.2.41",
