@@ -62,7 +62,7 @@ const isValidUrl = computed(() => {
 
 <template>
   <div class="border-b-2 card-layout">
-    <div class="flex justify-center sm:items-center w-12 sm:w-20 p-5">
+    <div class="flex justify-center items-center w-12 sm:w-20 p-5">
       <p class="text-center font-semibold text-[#f3621d] text-sm sm:text-xl">
         {{ score }}
       </p>

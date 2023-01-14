@@ -46,35 +46,42 @@ const creatTime = computed(() => {
 </script>
 
 <template>
-  <div class="flex border-b-2">
-    <div class="flex justify-center items-center w-20 p-5">
-      <p class="text-center font-semibold text-sky-700 text-xl">
+  <div class="border-b-2 card-layout">
+    <div class="flex justify-center items-center w-12 sm:w-20 p-5">
+      <p class="text-center font-semibold text-[#f3621d] text-sm sm:text-xl">
         {{ score }}
       </p>
     </div>
-    <div class="flex flex-col justify-center overflow-hidden truncate">
+    <div class="flex flex-col justify-center sm:overflow-hidden sm:truncate my-4 sm:my-0">
       <div class="flex items-center font-mono space-x-1 ">
-        <router-link :to="`/ask/${id}/details`" class="font-medium hover:decoration-sky-500 truncate hover:underline">
+        <router-link :to="`/ask/${id}/details`" class="text-sm  sm:text-base sm:truncate  font-medium hover:decoration-orange-500 hover:underline">
           {{ title }}
         </router-link>
       </div>
-      <div class="flex text-sm text-slate-500  ">
+      <div class="flex text-xs sm:text-sm text-slate-500  ">
         <router-link :to="`/user/${author}`">
-          by <span class="hover:underline hover:decoration-sky-500">{{ author }}</span>
+          by <span class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">{{ author }}</span>
         </router-link>
-        <p class="px-4">
+        <p class="px-1 sm:px-4">
           |
         </p>
         <router-link :to="`/ask/${id}/details`">
-          <p class="hover:underline hover:decoration-sky-500">
+          <p class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">
             {{ countCommet }}
           </p>
         </router-link>
-        <p class="px-4">
+        <p class="px-1 sm:px-4">
           |
         </p>
-        <p>created {{ creatTime }}</p>
+        <p><span class="hidden sm:inline">created</span> {{ creatTime }}</p>
       </div>
     </div>
   </div>
 </template>
+<style scoped>
+
+.card-layout{
+  display: grid;
+  grid-template-columns: 1fr 11fr;
+}
+</style>

@@ -50,7 +50,7 @@ const onPreviousClick = () => {
 <template>
   <div class="flex flex-col bg-white h-full w-full">
     <template v-if="isNewsListFetching">
-      <div v-for="n in 10" :key="n" class="flex-grow">
+      <div v-for="n in 20" :key="n" class="flex-grow">
         <NewsItemLoader :id="n" />
       </div>
       <NewsItemLoader />
