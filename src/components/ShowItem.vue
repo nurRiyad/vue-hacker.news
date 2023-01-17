@@ -53,7 +53,7 @@ const creatTime = computed(() => {
     </div>
     <div class="flex flex-col justify-center sm:overflow-hidden sm:truncate my-4 sm:my-0">
       <div class="flex items-center font-mono space-x-1">
-        <a :href="url" target="_blank" class="text-sm  sm:text-base sm:truncate  font-medium hover:decoration-orange-500">
+        <a :href="url" target="_blank" class="text-sm  sm:text-base sm:truncate  font-medium hover:decoration-orange-500 hover:underline">
           {{ title }}
         </a>
       </div>
