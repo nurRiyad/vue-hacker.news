@@ -79,7 +79,6 @@ const creatTime = computed(() => {
 </template>
 
 <style scoped>
-
 .card-layout{
   display: grid;
   grid-template-columns: 1fr 11fr;

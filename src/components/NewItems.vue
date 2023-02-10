@@ -61,7 +61,7 @@ const isValidUrl = computed(() => {
 </script>
 
 <template>
-  <div class="border-b-2 card-layout">
+  <div class="border-b-2 card-layout pr-3">
     <div class="flex justify-center items-center w-12 sm:w-20 p-5">
       <p class="text-center font-semibold text-[#f3621d] text-sm sm:text-xl">
         {{ score }}
@@ -96,8 +96,8 @@ const isValidUrl = computed(() => {
     </div>
   </div>
 </template>
-<style scoped>
 
+<style scoped>
 .card-layout{
   display: grid;
   grid-template-columns: 1fr 11fr;

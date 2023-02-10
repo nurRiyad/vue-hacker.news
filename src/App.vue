@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useHead } from '@unhead/vue'
 import FooterCom from '@/components/FooterCom.vue'
 import NavbarCom from '@/components/NavbarCom.vue'
 import { useNewStore } from '@/stores/news'
-import { useHead } from '@unhead/vue'
 
 const newsStore = useNewStore()
 onMounted(() => {
@@ -11,14 +11,14 @@ onMounted(() => {
 })
 
 // add meta tags
-const description =
-  'Hacker News is a social news website focusing on computer science and entrepreneurship. This site with built by Al Asad Nur Riyad wiht Vue3, Vue-Router, Pinia, TailwindCss, VueUse'
-const ogTitle =
-  'HackerHews built with Vue3, Vue-Router, Pinia, TailwindCss, VueUse By Al Asad Nur Riyad'
-const twitterDescription =
-  'HackerHews built with Vue3, Vue-Router, Pinia, TailwindCss, VueUse By Al Asad Nur Riyad'
-const image =
-  'https://hnews-nurriyad.netlify.app/android-chrome-512x512.png'
+const description
+  = 'Hacker News is a social news website focusing on computer science and entrepreneurship. This site with built by Al Asad Nur Riyad wiht Vue3, Vue-Router, Pinia, TailwindCss, VueUse'
+const ogTitle
+  = 'HackerHews built with Vue3, Vue-Router, Pinia, TailwindCss, VueUse By Al Asad Nur Riyad'
+const twitterDescription
+  = 'HackerHews built with Vue3, Vue-Router, Pinia, TailwindCss, VueUse By Al Asad Nur Riyad'
+const image
+  = 'https://hnews-nurriyad.netlify.app/android-chrome-512x512.png'
 const mySite = 'https://hnews-nurriyad.netlify.app'
 
 useHead({
@@ -70,7 +70,6 @@ useHead({
     },
   ],
 })
-
 </script>
 
 <template>
