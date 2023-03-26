@@ -13,6 +13,9 @@ const head = createHead()
 
 app.use(createPinia())
 app.use(router)
+
+
+////sdfsdfsdf
 app.use(head)
 
 app.mount('#app')
