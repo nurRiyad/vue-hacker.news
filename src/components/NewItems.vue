@@ -61,7 +61,7 @@ const isValidUrl = computed(() => {
 </script>
 
 <template>
-  <div class="border-b-2 card-layout pr-3">
+  <div class="border-b-2 card-layout pr-3" data-testid="news-item">
     <div class="flex justify-center items-center w-12 sm:w-20 p-5">
       <p class="text-center font-semibold text-[#f3621d] text-sm sm:text-xl">
         {{ score }}
@@ -84,7 +84,7 @@ const isValidUrl = computed(() => {
           |
         </p>
         <router-link :to="`/news/${id}/details`">
-          <p class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">
+          <p class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500" data-testid = "comment">
             {{ countCommet }}
           </p>
         </router-link>
