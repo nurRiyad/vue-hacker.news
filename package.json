@@ -11,13 +11,13 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@vueuse/core": "^9.5.0",
-    "@vueuse/head": "^1.0.22",
+    "@vueuse/core": "^10.5.0",
+    "@vueuse/head": "^2.0.0",
     "moment": "^2.29.4",
-    "pinia": "^2.0.23",
-    "vue": "^3.2.41",
+    "pinia": "^2.1.7",
+    "vue": "^3.3.7",
     "vue-content-loader": "^2.0.1",
-    "vue-router": "^4.1.5"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.29.4",

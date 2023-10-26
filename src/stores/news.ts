@@ -48,7 +48,7 @@ export const useNewStore = defineStore('newsStore', () => {
       await Promise.all([getTopNewsList(), getBestNewsList(), getNewNewsList(), getTopAsk(), getTopShow(), getTopJobs()])
     }
     catch (error) {
-      console.log(error)
+      console.error(error)
     }
     isNewsListFetching.value = false
   }
