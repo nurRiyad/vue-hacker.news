@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import NewItems from '@/components/NewItems.vue'
-import CommentsCom from '@/components/CommentsCom.vue'
-import NewsItemLoader from '@/components/NewsItemLoader.vue'
+
+const NewItems = defineAsyncComponent(() => import('@/components/NewItems.vue'))
+const CommentsCom = defineAsyncComponent(() => import('@/components/CommentsCom.vue'))
+const NewsItemLoader = defineAsyncComponent(() => import('@/components/NewsItemLoader.vue'))
 
 const route = useRoute()
 const newid = computed(() => {

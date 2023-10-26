@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import NewsItemLoader from '@/components/NewsItemLoader.vue'
 import { useNewStore } from '@/stores/news'
-import AskItem from '@/components/AskItem.vue'
-import IconNext from '@/components/icons/Next.vue'
-import IconPrevious from '@/components/icons/Previous.vue'
-import EmptyNews from '@/components/EmptyNews.vue'
+
+const IconNext = defineAsyncComponent(() => import('@/components/icons/Next.vue'))
+const IconPrevious = defineAsyncComponent(() => import('@/components/icons/Previous.vue'))
+const EmptyNews = defineAsyncComponent(() => import('@/components/EmptyNews.vue'))
+const AskItem = defineAsyncComponent(() => import('@/components/AskItem.vue'))
+const NewsItemLoader = defineAsyncComponent(() => import('@/components/NewsItemLoader.vue'))
 
 const newsStore = useNewStore()
 const { topAsk, isNewsListFetching } = storeToRefs(newsStore)

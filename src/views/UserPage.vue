@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
-import User from '@/components/User.vue'
-import UserLoader from '@/components/UserLoader.vue'
+
+const User = defineAsyncComponent(() => import('@/components/User.vue'))
+const UserLoader = defineAsyncComponent(() => import('@/components/UserLoader.vue'))
 
 const route = useRoute()
 const userId = computed(() => {
