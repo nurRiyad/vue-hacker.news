@@ -2,5 +2,10 @@
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.fixAll": true
-  }
+  },
+  "cSpell.words": [
+    "Pinia",
+    "unhead",
+    "vueuse"
+  ]
 }

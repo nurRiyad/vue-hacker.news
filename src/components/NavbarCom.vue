@@ -9,7 +9,7 @@ const routeName = computed(() => route.name || '')
 
 <template>
   <div class="p-5 bg-[#f3621d] text-white font-mono">
-    <div class="flex flex-row justify-between container mx-auto max-w-6xl px-2">
+    <div class="flex flex-row justify-between container mx-auto max-w-5xl px-2">
       <!-- Left navbar -->
       <div class="flex flex-row space-x-4">
         <RouterLink to="/">
