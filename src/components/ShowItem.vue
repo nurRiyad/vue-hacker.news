@@ -65,8 +65,8 @@ const creatTime = computed(() => {
           |
         </p>
         <router-link :to="`/show/${id}/details`">
-          <p class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">
-            {{ countCommet }}
+          <p class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500" data-testid = "comment">
+            {{ countCommet }} 
           </p>
         </router-link>
         <p class="px-1 sm:px-4">
