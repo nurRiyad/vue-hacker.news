@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 
 const ShowItem = defineAsyncComponent(() => import('@/components/ShowItem.vue'))
 const CommentsCom = defineAsyncComponent(() => import('@/components/CommentsCom.vue'))
-const NewsItemLoader = defineAsyncComponent(() => import('@/components/NewsItemLoader.vue'))
+const NewsLoader = defineAsyncComponent(() => import('@/components/NewsLoader.vue'))
 
 const route = useRoute()
 const newid = computed(() => {
@@ -27,7 +27,7 @@ const setKids = (val: Array<number>) => {
           <ShowItem :id="newid" @kids="setKids" />
         </template>
         <template #fallback>
-          <NewsItemLoader />
+          <NewsLoader />
         </template>
       </Suspense>
     </div>
@@ -38,7 +38,7 @@ const setKids = (val: Array<number>) => {
             <CommentsCom :id="kid" />
           </template>
           <template #fallback>
-            <NewsItemLoader />
+            <NewsLoader />
           </template>
         </Suspense>
       </div>

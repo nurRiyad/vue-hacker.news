@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 
 const AskItem = defineAsyncComponent(() => import('../components/AskItem.vue'))
 const CommentsCom = defineAsyncComponent(() => import('../components/CommentsCom.vue'))
-const NewsItemLoader = defineAsyncComponent(() => import('../components/NewsItemLoader.vue'))
+const NewsLoader = defineAsyncComponent(() => import('../components/NewsLoader.vue'))
 
 const route = useRoute()
 const newid = computed(() => {
@@ -35,7 +35,7 @@ const setText = (val: string) => {
           </div>
         </template>
         <template #fallback>
-          <NewsItemLoader />
+          <NewsLoader />
         </template>
       </Suspense>
     </div>
@@ -46,7 +46,7 @@ const setText = (val: string) => {
             <CommentsCom :id="kid" />
           </template>
           <template #fallback>
-            <NewsItemLoader />
+            <NewsLoader />
           </template>
         </Suspense>
       </div>

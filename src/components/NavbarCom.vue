@@ -4,7 +4,7 @@ import { RouterLink, useRoute } from 'vue-router'
 
 const route = useRoute()
 
-const routeName = computed(() => route.name || '')
+const routeName = computed(() => Array.isArray(route.params.type) ? route.params.type[0] : route.params.type || '')
 </script>
 
 <template>
@@ -18,7 +18,7 @@ const routeName = computed(() => route.name || '')
               class="sm:hidden w-8 object-cover
             " src="@/assets/logo/hackerNews.png" alt="hackerNew logo"
             >
-            <p class="hidden text-xl font-bold sm:block" :class="{ underline: routeName === 'topNews' }">
+            <p class="hidden text-xl font-bold sm:block" :class="{ underline: routeName === '' }">
               HackerNews
             </p>
           </div>
@@ -28,31 +28,31 @@ const routeName = computed(() => route.name || '')
       <div class="flex flex-row space-x-4 ">
         <RouterLink
           to="/new" class="hover:text-white hover:font-semibold"
-          :class="{ underline: routeName === 'newPage' }"
+          :class="{ underline: routeName === 'new' }"
         >
           New
         </RouterLink>
         <RouterLink
           to="/best" class="hover:text-white hover:font-semibold"
-          :class="{ underline: routeName === 'bestPage' }"
+          :class="{ underline: routeName === 'best' }"
         >
           Best
         </RouterLink>
         <RouterLink
           to="/show" class="hover:text-white hover:font-semibold"
-          :class="{ underline: routeName === 'showPage' }"
+          :class="{ underline: routeName === 'show' }"
         >
           Show
         </RouterLink>
         <RouterLink
           to="/ask" class="hover:text-white hover:font-semibold"
-          :class="{ underline: routeName === 'askPage' }"
+          :class="{ underline: routeName === 'ask' }"
         >
           Ask
         </RouterLink>
         <RouterLink
           to="/jobs" class="hover:text-white hover:font-semibold"
-          :class="{ underline: routeName === 'jobsPage' }"
+          :class="{ underline: routeName === 'job' }"
         >
           Jobs
         </RouterLink>

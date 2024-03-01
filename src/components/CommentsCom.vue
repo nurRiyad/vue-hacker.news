@@ -3,7 +3,7 @@ import { useFetch } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import type { Comment } from '@/types/Comment'
 import { timeDifferene } from '@/utils/time'
-import NewsItemLoader from '@/components/NewsItemLoader.vue'
+import NewsLoader from '@/components/NewsLoader.vue'
 import CommentsCom from '@/components/CommentsCom.vue'
 
 // set props
@@ -63,7 +63,7 @@ const kids = computed(() => {
               <CommentsCom :id="kid" />
             </template>
             <template #fallback>
-              <NewsItemLoader />
+              <NewsLoader />
             </template>
           </Suspense>
         </div>

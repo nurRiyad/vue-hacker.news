@@ -3,8 +3,8 @@ import { computed, defineAsyncComponent, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useNewStore } from '@/stores/news'
 
-const NewsItemLoader = defineAsyncComponent(() => import('@/components/NewsItemLoader.vue'))
-const NewItems = defineAsyncComponent(() => import('@/components/NewItems.vue'))
+const NewsLoader = defineAsyncComponent(() => import('@/components/NewsLoader.vue'))
+const NewsItems = defineAsyncComponent(() => import('@/components/NewsItems.vue'))
 const IconNext = defineAsyncComponent(() => import('@/components/icons/Next.vue'))
 const IconPrevious = defineAsyncComponent(() => import('@/components/icons/Previous.vue'))
 const EmptyNews = defineAsyncComponent(() => import('@/components/EmptyNews.vue'))
@@ -52,18 +52,18 @@ const onPreviousClick = () => {
   <div class="flex flex-col bg-white h-full w-full">
     <template v-if="isNewsListFetching">
       <div v-for="n in 20" :key="n" class="flex-grow">
-        <NewsItemLoader :id="n" />
+        <NewsLoader :id="n" />
       </div>
-      <NewsItemLoader />
+      <NewsLoader />
     </template>
     <template v-else>
       <div v-for="n in filteredNews" :key="n" class="flex-grow">
         <Suspense>
           <template #default>
-            <NewItems :id="n" />
+            <NewsItems :id="n" />
           </template>
           <template #fallback>
-            <NewsItemLoader />
+            <NewsLoader />
           </template>
         </Suspense>
       </div>
