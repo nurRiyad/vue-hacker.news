@@ -1,15 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TopPage from '../views/TopPage.vue'
-import NewPage from '@/views/NewPage.vue'
-import ShowPage from '@/views/ShowPage.vue'
-import AskPage from '@/views/AskPage.vue'
-import JobsPage from '@/views/JobsPage.vue'
-import BestPage from '@/views/BestPage.vue'
-import UserPage from '@/views/UserPage.vue'
-import NewsDetails from '@/views/NewsDetails.vue'
-import ShowDetails from '@/views/ShowDetails.vue'
-import AskDetails from '@/views/AskDetails.vue'
-import NotFound from '@/views/NotFount.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,57 +6,37 @@ const router = createRouter({
     {
       path: '/',
       name: 'topNews',
-      component: TopPage,
+      component: () => import('@/views/TheNews.vue'),
     },
     {
-      path: '/new',
+      path: '/:type',
       name: 'newPage',
-      component: NewPage,
-    },
-    {
-      path: '/best',
-      name: 'bestPage',
-      component: BestPage,
-    },
-    {
-      path: '/show',
-      name: 'showPage',
-      component: ShowPage,
-    },
-    {
-      path: '/ask',
-      name: 'askPage',
-      component: AskPage,
-    },
-    {
-      path: '/jobs',
-      name: 'jobsPage',
-      component: JobsPage,
+      component: () => import('@/views/TheNews.vue'),
     },
     {
       path: '/user/:userid',
       name: 'userPage',
-      component: UserPage,
+      component: () => import('@/views/UserPage.vue'),
     },
     {
-      path: '/news/:newsid/details',
+      path: '/news/:newsid',
       name: 'newsDetails',
-      component: NewsDetails,
+      component: () => import('@/views/NewsDetails.vue'),
     },
     {
-      path: '/show/:newsid/details',
+      path: '/show/:newsid',
       name: 'showDetails',
-      component: ShowDetails,
+      component: () => import('@/views/NewsDetails.vue'),
     },
     {
-      path: '/ask/:newsid/details',
+      path: '/ask/:newsid',
       name: 'askDetails',
-      component: AskDetails,
+      component: () => import('@/views/NewsDetails.vue'),
     },
     {
       path: '/:pathMatch(.*)*',
-      name: 'NotFound',
-      component: NotFound,
+      name: 'notFound',
+      component: () => import('@/views/NotFount.vue'),
     },
   ],
 })

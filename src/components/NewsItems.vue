@@ -83,7 +83,7 @@ const isValidUrl = computed(() => {
         <p class="px-1 sm:px-4">
           |
         </p>
-        <router-link :to="`/news/${id}/details`">
+        <router-link :to="`/news/${id}`">
           <p class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">
             {{ countCommet }}
           </p>
