@@ -54,7 +54,7 @@ const creatTime = computed(() => {
     </div>
     <div class="flex flex-col justify-center sm:overflow-hidden sm:truncate my-4 sm:my-0">
       <div class="flex items-center font-mono space-x-1 ">
-        <router-link :to="`/ask/${id}/details`" class="text-sm  sm:text-base sm:truncate  font-medium hover:decoration-orange-500 hover:underline">
+        <router-link :to="`/ask/${id}`" class="text-sm  sm:text-base sm:truncate  font-medium hover:decoration-orange-500 hover:underline">
           {{ title }}
         </router-link>
       </div>
@@ -65,7 +65,7 @@ const creatTime = computed(() => {
         <p class="px-1 sm:px-4">
           |
         </p>
-        <router-link :to="`/ask/${id}/details`">
+        <router-link :to="`/ask/${id}`">
           <p class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">
             {{ countCommet }}
           </p>

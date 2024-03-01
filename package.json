@@ -13,7 +13,7 @@
   "dependencies": {
     "@vueuse/core": "^10.9.0",
     "@vueuse/head": "^2.0.0",
-    "moment": "^2.29.4",
+    "moment": "^2.30.1",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
     "vue-content-loader": "^2.0.1",

@@ -1,10 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import UserPage from '@/views/UserPage.vue'
-import NewsDetails from '@/views/NewsDetails.vue'
-import ShowDetails from '@/views/ShowDetails.vue'
-import AskDetails from '@/views/AskDetails.vue'
-import NotFound from '@/views/NotFount.vue'
-import TheNews from '@/views/TheNews.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,37 +6,37 @@ const router = createRouter({
     {
       path: '/',
       name: 'topNews',
-      component: TheNews,
+      component: () => import('@/views/TheNews.vue'),
     },
     {
       path: '/:type',
       name: 'newPage',
-      component: TheNews,
+      component: () => import('@/views/TheNews.vue'),
     },
     {
       path: '/user/:userid',
       name: 'userPage',
-      component: UserPage,
+      component: () => import('@/views/UserPage.vue'),
     },
     {
-      path: '/news/:newsid/details',
+      path: '/news/:newsid',
       name: 'newsDetails',
-      component: NewsDetails,
+      component: () => import('@/views/NewsDetails.vue'),
     },
     {
-      path: '/show/:newsid/details',
+      path: '/show/:newsid',
       name: 'showDetails',
-      component: ShowDetails,
+      component: () => import('@/views/NewsDetails.vue'),
     },
     {
-      path: '/ask/:newsid/details',
+      path: '/ask/:newsid',
       name: 'askDetails',
-      component: AskDetails,
+      component: () => import('@/views/AskDetails.vue'),
     },
     {
       path: '/:pathMatch(.*)*',
-      name: 'NotFound',
-      component: NotFound,
+      name: 'notFound',
+      component: () => import('@/views/NotFount.vue'),
     },
   ],
 })

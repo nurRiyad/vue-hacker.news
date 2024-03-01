@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const NewsItems = defineAsyncComponent(() => import('@/components/NewsItems.vue'))
+const ShowItem = defineAsyncComponent(() => import('@/components/ShowItem.vue'))
 const CommentsCom = defineAsyncComponent(() => import('@/components/CommentsCom.vue'))
 const NewsLoader = defineAsyncComponent(() => import('@/components/NewsLoader.vue'))
 
@@ -11,6 +12,10 @@ const newid = computed(() => {
   const id = route.params.newsid
   const numID = Number(id)
   return numID
+})
+
+const isNewsDetailsPage = computed(() => {
+  return route.path.includes('/news/')
 })
 
 const kids = ref<Array<number>>([])
@@ -24,7 +29,8 @@ const setKids = (val: Array<number>) => {
     <div class="bg-white">
       <Suspense>
         <template #default>
-          <NewsItems :id="newid" @kids="setKids" />
+          <NewsItems v-if="isNewsDetailsPage" :id="newid" @kids="setKids" />
+          <ShowItem v-else :id="newid" @kids="setKids" />
         </template>
         <template #fallback>
           <NewsLoader />
