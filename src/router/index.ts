@@ -31,7 +31,7 @@ const router = createRouter({
     {
       path: '/ask/:newsid',
       name: 'askDetails',
-      component: () => import('@/views/AskDetails.vue'),
+      component: () => import('@/views/NewsDetails.vue'),
     },
     {
       path: '/:pathMatch(.*)*',

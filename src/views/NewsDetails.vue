@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 
 const NewsItems = defineAsyncComponent(() => import('@/components/NewsItems.vue'))
 const ShowItem = defineAsyncComponent(() => import('@/components/ShowItem.vue'))
+const AskItem = defineAsyncComponent(() => import('../components/AskItem.vue'))
 const CommentsCom = defineAsyncComponent(() => import('@/components/CommentsCom.vue'))
 const NewsLoader = defineAsyncComponent(() => import('@/components/NewsLoader.vue'))
 
@@ -14,13 +15,22 @@ const newid = computed(() => {
   return numID
 })
 
-const isNewsDetailsPage = computed(() => {
-  return route.path.includes('/news/')
+const detailsPageType = computed(() => {
+  if (route.path.includes('/ask/'))
+    return 'ask'
+  else if (route.path.includes('/show/'))
+    return 'show'
+  else return 'news'
 })
 
 const kids = ref<Array<number>>([])
 const setKids = (val: Array<number>) => {
   kids.value = val
+}
+
+const text = ref('')
+const setText = (val: string) => {
+  text.value = val
 }
 </script>
 
@@ -29,8 +39,12 @@ const setKids = (val: Array<number>) => {
     <div class="bg-white">
       <Suspense>
         <template #default>
-          <NewsItems v-if="isNewsDetailsPage" :id="newid" @kids="setKids" />
-          <ShowItem v-else :id="newid" @kids="setKids" />
+          <ShowItem v-if="detailsPageType === 'show'" :id="newid" @kids="setKids" />
+          <div v-else-if="detailsPageType === 'ask'">
+            <AskItem :id="newid" @kids="setKids" @text="setText" />
+            <div class="text-xs text-slate-600 p-5" v-html="text" />
+          </div>
+          <NewsItems v-else :id="newid" @kids="setKids" />
         </template>
         <template #fallback>
           <NewsLoader />
