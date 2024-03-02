@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import NewsLoader from '@/components/NewsLoader.vue'
 
 const NewsItems = defineAsyncComponent(() => import('@/components/NewsItems.vue'))
 const ShowItem = defineAsyncComponent(() => import('@/components/ShowItem.vue'))
 const AskItem = defineAsyncComponent(() => import('../components/AskItem.vue'))
 const CommentsCom = defineAsyncComponent(() => import('@/components/CommentsCom.vue'))
-const NewsLoader = defineAsyncComponent(() => import('@/components/NewsLoader.vue'))
 
 const route = useRoute()
 const newid = computed(() => {

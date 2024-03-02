@@ -3,8 +3,8 @@ import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useNewStore } from '@/stores/news'
+import NewsLoader from '@/components/NewsLoader.vue'
 
-const NewsLoader = defineAsyncComponent(() => import('@/components/NewsLoader.vue'))
 const NewsItems = defineAsyncComponent(() => import('@/components/NewsItems.vue'))
 const JobItem = defineAsyncComponent(() => import('@/components/JobItem.vue'))
 const ShowItem = defineAsyncComponent(() => import('@/components/ShowItem.vue'))
