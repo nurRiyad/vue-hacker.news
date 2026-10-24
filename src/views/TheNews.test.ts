@@ -26,10 +26,21 @@ const categories = [
   { type: 'jobs', ids: [601, 602], commentsPath: undefined },
 ] as const
 
+const defaultStoryLists: Record<string, number[]> = {
+  topstories: [101, 102],
+  newstories: [201, 202],
+  beststories: [301, 302],
+  askstories: [401, 402],
+  showstories: [501, 502],
+  jobstories: [601, 602],
+}
+const storyLists = { ...defaultStoryLists }
+
 let pinia: ReturnType<typeof createPinia>
 let store: ReturnType<typeof useNewStore>
 
 beforeEach(() => {
+  Object.assign(storyLists, defaultStoryLists)
   pinia = createPinia()
   setActivePinia(pinia)
   store = useNewStore()
@@ -41,6 +52,15 @@ beforeEach(() => {
   store.topJobs = [601, 602]
   useFetchMock.mockReset()
   useFetchMock.mockImplementation((url: string) => {
+    const list = Object.entries(storyLists).find(([endpoint]) => url.includes(`/${endpoint}.json`))
+    if (list) {
+      return {
+        get: () => ({
+          json: async () => ({ data: ref(list[1]), error: ref(null) }),
+        }),
+      }
+    }
+
     const id = Number(url.match(/item\/(\d+)\.json/)?.[1])
     const news = {
       by: `author-${id}`,
@@ -96,7 +116,7 @@ describe('TheNews', () => {
   )
 
   it('paginates a category and resets to the first page when the category changes', async () => {
-    store.topNewsList = Array.from({ length: 21 }, (_, index) => index + 1)
+    storyLists.topstories = Array.from({ length: 21 }, (_, index) => index + 1)
     const { wrapper, router } = await mountPage('top')
     const pageLabel = () =>
       wrapper
