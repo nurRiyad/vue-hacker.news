@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import NewsLoader from '@/components/NewsLoader.vue'
+import { usePagination } from '@/composables/usePagination'
 import { useNewStore } from '@/stores/news'
 
 const NewsItems = defineAsyncComponent(() => import('@/components/NewsItems.vue'))
@@ -32,27 +33,17 @@ const newsList = computed(() => {
   return []
 })
 
-const currentPage = ref(1)
-const totalPage = computed(() => Math.max(1, Math.ceil(newsList.value.length / 20)))
+const {
+  currentPage,
+  totalPages: totalPage,
+  currentItems: filteredNews,
+  isEmpty: isNewsEmpty,
+  nextPage: onNextClick,
+  previousPage: onPreviousClick,
+  resetPage,
+} = usePagination(newsList)
 
-const filteredNews = computed(() => {
-  const fst = (currentPage.value - 1) * 20
-  return newsList.value.slice(fst, fst + 20)
-})
-
-const isNewsEmpty = computed(() => filteredNews.value.length === 0)
-
-watch(newsType, () => {
-  currentPage.value = 1
-})
-
-function onNextClick() {
-  if (currentPage.value !== totalPage.value) currentPage.value += 1
-}
-
-function onPreviousClick() {
-  if (currentPage.value !== 1) currentPage.value -= 1
-}
+watch(newsType, resetPage)
 </script>
 
 <template>

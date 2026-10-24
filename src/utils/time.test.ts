@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
-import { timeDifferene } from '@/utils/time'
+import { formatRelativeTime } from '@/utils/time'
 
 const NOW = new Date('2026-06-15T12:00:00')
 const MINUTE = 60
@@ -8,7 +8,7 @@ const DAY = 24 * HOUR
 
 const secondsAgo = (seconds: number) => Math.floor(NOW.getTime() / 1000) - seconds
 
-describe('timeDifferene', () => {
+describe('formatRelativeTime', () => {
   beforeEach(() => {
     vi.useFakeTimers()
     vi.setSystemTime(NOW)
@@ -31,6 +31,6 @@ describe('timeDifferene', () => {
     ['a year', 400 * DAY, '1 year ago'],
     ['several years', 3 * 365 * DAY + DAY, '3 years ago'],
   ])('formats %s', (_label, elapsedSeconds, expected) => {
-    expect(timeDifferene(secondsAgo(elapsedSeconds))).toBe(expected)
+    expect(formatRelativeTime(secondsAgo(elapsedSeconds))).toBe(expected)
   })
 })

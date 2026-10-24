@@ -7,7 +7,10 @@ import type { News } from '@/types/News'
 
 const useFetchMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@vueuse/core', () => ({ useFetch: useFetchMock }))
+vi.mock('@vueuse/core', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@vueuse/core')>()),
+  useFetch: useFetchMock,
+}))
 
 const nowInSeconds = () => Math.floor(Date.now() / 1000)
 
@@ -25,7 +28,11 @@ const makeNews = (overrides: Partial<News> = {}): News => ({
 
 // NewsItems uses top-level await in setup, so it must render inside <Suspense>.
 const mountItem = async (news: News) => {
-  useFetchMock.mockResolvedValue({ data: ref(JSON.stringify(news)) })
+  useFetchMock.mockReturnValue({
+    get: () => ({
+      json: async () => ({ data: ref(news), error: ref(null) }),
+    }),
+  })
 
   const Host = defineComponent({
     render: () => h(Suspense, null, { default: () => h(NewsItems, { id: news.id }) }),

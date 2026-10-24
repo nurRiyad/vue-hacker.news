@@ -14,12 +14,19 @@ const lists: Record<string, Array<number>> = {
 
 const useFetchMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@vueuse/core', () => ({ useFetch: useFetchMock }))
+vi.mock('@vueuse/core', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@vueuse/core')>()),
+  useFetch: useFetchMock,
+}))
 
 const respondWithLists = () => {
-  useFetchMock.mockImplementation(async (url: string) => {
+  useFetchMock.mockImplementation((url: string) => {
     const name = Object.keys(lists).find((key) => url.includes(`/${key}.json`))
-    return { data: ref(JSON.stringify(name ? lists[name] : [])) }
+    return {
+      get: () => ({
+        json: async () => ({ data: ref(name ? lists[name] : []), error: ref(null) }),
+      }),
+    }
   })
 }
 
@@ -69,7 +76,9 @@ describe('useNewStore', () => {
 
   it('logs the error and stops fetching when a request fails', async () => {
     const error = new Error('network down')
-    useFetchMock.mockRejectedValue(error)
+    useFetchMock.mockReturnValue({
+      get: () => ({ json: async () => ({ data: ref(null), error: ref(error) }) }),
+    })
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
     const store = useNewStore()
 
