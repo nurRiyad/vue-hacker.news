@@ -37,12 +37,12 @@ function setText(val: string) {
     <div class="bg-white">
       <Suspense>
         <template #default>
-          <ShowItem v-if="detailsPageType === 'show'" :id="newid" @kids="setKids" />
+          <ShowItem v-if="detailsPageType === 'show'" :key="newid" :id="newid" @kids="setKids" />
           <div v-else-if="detailsPageType === 'ask'">
-            <AskItem :id="newid" @kids="setKids" @text="setText" />
+            <AskItem :key="newid" :id="newid" @kids="setKids" @text="setText" />
             <div class="text-xs text-slate-600 p-5" v-html="text" />
           </div>
-          <NewsItems v-else :id="newid" @kids="setKids" />
+          <NewsItems v-else :key="newid" :id="newid" @kids="setKids" />
         </template>
         <template #fallback>
           <NewsLoader />

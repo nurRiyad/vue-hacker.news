@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import NewsLoader from '@/components/NewsLoader.vue'
 import { useNewStore } from '@/stores/news'
@@ -33,25 +33,17 @@ const newsList = computed(() => {
 })
 
 const currentPage = ref(1)
-const totalPage = computed(() => {
-  const totalNews = newsList.value?.length ?? 1
-  if (totalNews % 20 === 0) return totalNews / 20
-  else return Math.floor(totalNews / 20) + 1
-})
+const totalPage = computed(() => Math.max(1, Math.ceil(newsList.value.length / 20)))
 
 const filteredNews = computed(() => {
   const fst = (currentPage.value - 1) * 20
-  const lst = currentPage.value * 20 - 1
-
-  return newsList.value?.filter((val, idx) => {
-    if (idx <= lst && idx >= fst) return true
-    else return false
-  })
+  return newsList.value.slice(fst, fst + 20)
 })
 
-const isNewsEmpty = computed(() => {
-  if (filteredNews.value?.length > 0) return false
-  else return true
+const isNewsEmpty = computed(() => filteredNews.value.length === 0)
+
+watch(newsType, () => {
+  currentPage.value = 1
 })
 
 function onNextClick() {

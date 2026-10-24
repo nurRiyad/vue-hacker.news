@@ -2,6 +2,6 @@ export interface User {
   id: string
   created: number
   karma: number
-  about: string
+  about?: string
   submitted: Array<number>
 }

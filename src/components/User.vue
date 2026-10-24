@@ -1,40 +1,27 @@
 <script setup lang="ts">
 import type { User } from '@/types/User'
 import { useFetch } from '@vueuse/core'
-import { computed, ref } from 'vue'
 import { timeDifferene } from '@/utils/time'
 
 // set props
 interface Props {
   userid: string
 }
-const props = withDefaults(defineProps<Props>(), {
-  userid: '-',
-})
-
-const about = ref('')
-const karma = ref(0)
-const time = ref(0)
-
-const coutDif = computed(() => {
-  return timeDifferene(time.value)
-})
+const props = defineProps<Props>()
 
 const { data: resp } = await useFetch(
   `https://hacker-news.firebaseio.com/v0/user/${props.userid}.json?print=pretty`,
 )
-const news = ref<User>(JSON.parse(resp.value as string))
-
-about.value = news.value.about
-karma.value = news.value.karma
-time.value = news.value.created
+const user = JSON.parse(resp.value as string) as User
+const createdAt = timeDifferene(user.created)
+const about = user.about ?? ''
 </script>
 
 <template>
   <div>
-    <p>Username: {{ userid }}</p>
-    <p>Karma: {{ karma }}</p>
-    <p>Created: {{ coutDif }}</p>
+    <p>Username: {{ props.userid }}</p>
+    <p>Karma: {{ user.karma }}</p>
+    <p>Created: {{ createdAt }}</p>
     <p>About:</p>
     <pre class="border p-2">
     <div class="overflow-auto" v-html="about" />
