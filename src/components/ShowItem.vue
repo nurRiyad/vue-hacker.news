@@ -7,6 +7,7 @@ import { createStoryDescription, type StorySeoMetadata } from '@/utils/seo'
 
 interface Props {
   id: number
+  item?: Show
 }
 const props = defineProps<Props>()
 
@@ -15,7 +16,7 @@ const emit = defineEmits<{
   seo: [metadata: StorySeoMetadata]
 }>()
 
-const news = await fetchHackerNewsResource<Show>(`item/${props.id}`)
+const news = props.item ?? (await fetchHackerNewsResource<Show>(`item/${props.id}`))
 
 emit('kids', news.kids ?? [])
 emit('seo', {

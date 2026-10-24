@@ -50,9 +50,7 @@ describe('NewsItems', () => {
   it('requests the item by id', async () => {
     await mountItem(makeNews({ id: 42 }))
 
-    expect(useFetchMock).toHaveBeenCalledWith(
-      'https://hacker-news.firebaseio.com/v0/item/42.json?print=pretty',
-    )
+    expect(useFetchMock).toHaveBeenCalledWith('https://hacker-news.firebaseio.com/v0/item/42.json')
   })
 
   it('shows the score, title, domain and age', async () => {

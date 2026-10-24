@@ -5,7 +5,10 @@ import { useHead } from '@vueuse/head'
 import { useRoute } from 'vue-router'
 import NewsLoader from '@/components/NewsLoader.vue'
 import { usePagination } from '@/composables/usePagination'
+import { useScoreSortedItems } from '@/composables/useScoreSortedItems'
 import { useNewStore } from '@/stores/news'
+import type { Ask } from '@/types/Ask'
+import type { Show } from '@/types/Show'
 import { createPageHead } from '@/utils/seo'
 
 const NewsItems = defineAsyncComponent(() => import('@/components/NewsItems.vue'))
@@ -85,25 +88,72 @@ const {
   resetPage,
 } = usePagination(newsList)
 
-watch(newsType, resetPage)
+const canSort = computed(() => newsType.value === 'ask' || newsType.value === 'show')
+const sortByScore = computed(() => canSort.value && route.query.sort === 'score')
+const { items: sortedItems, isLoading: isSorting } = useScoreSortedItems<Ask | Show>(
+  filteredNews,
+  sortByScore,
+)
+
+const displayedItems = computed(() =>
+  sortByScore.value
+    ? sortedItems.value.map((data) => ({ id: data.id, data }))
+    : filteredNews.value.map((id) => ({ id, data: undefined })),
+)
+
+watch([newsType, sortByScore], resetPage)
+watch(newsType, (type) => newsStore.fetchNews(type), { immediate: true })
 </script>
 
 <template>
   <div class="flex flex-col h-full w-full">
-    <template v-if="isNewsListFetching">
+    <nav
+      v-if="canSort"
+      class="flex items-center gap-1 border-b border-line px-3 py-2 text-sm"
+      aria-label="Sort"
+    >
+      <RouterLink
+        :to="{ path: route.path }"
+        class="rounded-md px-3 py-1 font-medium transition-colors hover:bg-raised focus-visible:outline-2 focus-visible:outline-accent"
+        :class="sortByScore ? 'text-muted' : 'bg-accent text-page hover:bg-accent'"
+        :aria-current="sortByScore ? undefined : 'true'"
+      >
+        Newest
+      </RouterLink>
+      <RouterLink
+        :to="{ path: route.path, query: { sort: 'score' } }"
+        class="rounded-md px-3 py-1 font-medium transition-colors hover:bg-raised focus-visible:outline-2 focus-visible:outline-accent"
+        :class="sortByScore ? 'bg-accent text-page hover:bg-accent' : 'text-muted'"
+        :aria-current="sortByScore ? 'true' : undefined"
+      >
+        Best
+      </RouterLink>
+      <span v-if="sortByScore" class="ml-2 text-xs text-faint"
+        >sorted by score within this page</span
+      >
+    </nav>
+    <template v-if="isNewsListFetching || isSorting">
       <div v-for="n in 20" :key="n" class="flex-grow">
         <NewsLoader :id="n" />
       </div>
       <NewsLoader />
     </template>
     <template v-else>
-      <div v-for="n in filteredNews" :key="n" class="flex-grow">
+      <div v-for="item in displayedItems" :key="item.id" class="flex-grow">
         <Suspense>
           <template #default>
-            <JobItem v-if="newsType === 'jobs'" :id="n" />
-            <ShowItem v-else-if="newsType === 'show'" :id="n" />
-            <AskItem v-else-if="newsType === 'ask'" :id="n" />
-            <NewsItems v-else :id="n" />
+            <JobItem v-if="newsType === 'jobs'" :id="item.id" />
+            <ShowItem
+              v-else-if="newsType === 'show'"
+              :id="item.id"
+              :item="item.data as Show | undefined"
+            />
+            <AskItem
+              v-else-if="newsType === 'ask'"
+              :id="item.id"
+              :item="item.data as Ask | undefined"
+            />
+            <NewsItems v-else :id="item.id" />
           </template>
           <template #fallback>
             <NewsLoader />
