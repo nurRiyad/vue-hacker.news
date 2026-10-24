@@ -60,7 +60,7 @@ describe('NewsItems', () => {
 
     expect(wrapper.text()).toContain('128')
     expect(wrapper.text()).toContain('Show HN: A tiny Vue app')
-    expect(wrapper.text()).toContain('(example.com)')
+    expect(wrapper.text()).toContain('example.com')
     expect(wrapper.text()).toContain('2 hours ago')
     expect(wrapper.get('a').attributes('href')).toBe('https://example.com/post/1')
   })
@@ -99,7 +99,7 @@ describe('NewsItems', () => {
   it('hides the domain when the story omits its url', async () => {
     const wrapper = await mountItem(makeNews({ url: undefined }))
 
-    expect(wrapper.text()).not.toContain('(')
+    expect(wrapper.text()).not.toContain('example.com')
     expect(wrapper.get('a').attributes('href')).toBeUndefined()
   })
 })

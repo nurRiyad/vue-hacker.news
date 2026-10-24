@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { computed, defineAsyncComponent, watch } from 'vue'
+import { useHead } from '@vueuse/head'
 import { useRoute } from 'vue-router'
 import NewsLoader from '@/components/NewsLoader.vue'
 import { usePagination } from '@/composables/usePagination'
 import { useNewStore } from '@/stores/news'
+import { createPageHead } from '@/utils/seo'
 
 const NewsItems = defineAsyncComponent(() => import('@/components/NewsItems.vue'))
 const JobItem = defineAsyncComponent(() => import('@/components/JobItem.vue'))
@@ -18,6 +20,46 @@ const route = useRoute()
 const newsType = computed(() =>
   Array.isArray(route.params.type) ? route.params.type[0] : route.params.type || 'top',
 )
+
+const categorySeo: Partial<Record<string, { title: string; description: string }>> = {
+  top: {
+    title: 'Top stories',
+    description: 'Read the top Hacker News stories about computer science and entrepreneurship.',
+  },
+  new: {
+    title: 'New stories',
+    description: 'Read the newest stories submitted to Hacker News.',
+  },
+  best: {
+    title: 'Best stories',
+    description: 'Browse the highest-rated stories on Hacker News.',
+  },
+  show: {
+    title: 'Show HN',
+    description: 'Explore projects shared by the Hacker News community.',
+  },
+  ask: {
+    title: 'Ask HN',
+    description: 'Read questions and discussions from the Hacker News community.',
+  },
+  jobs: {
+    title: 'Hacker News jobs',
+    description: 'Browse job listings shared on Hacker News.',
+  },
+}
+
+const pageHead = computed(() => {
+  const category = categorySeo[newsType.value]
+
+  return createPageHead({
+    title: category?.title ?? 'Page not found',
+    description: category?.description ?? 'This Hacker News category does not exist.',
+    path: route.path,
+    robots: category ? undefined : 'noindex,follow',
+  })
+})
+
+useHead(pageHead)
 
 const newsStore = useNewStore()
 const { topNewsList, newNewsList, bestNewsList, topAsk, topJobs, topShow, isNewsListFetching } =
@@ -47,7 +89,7 @@ watch(newsType, resetPage)
 </script>
 
 <template>
-  <div class="flex flex-col bg-white h-full w-full">
+  <div class="flex flex-col h-full w-full">
     <template v-if="isNewsListFetching">
       <div v-for="n in 20" :key="n" class="flex-grow">
         <NewsLoader :id="n" />
@@ -71,12 +113,22 @@ watch(newsType, resetPage)
       <div v-if="isNewsEmpty" class="flex-grow">
         <EmptyNews />
       </div>
-      <div class="flex justify-center items-center text-center my-2 py-2 space-x-3">
-        <button :disabled="currentPage === 1" @click="onPreviousClick">
+      <div class="flex items-center justify-center gap-3 py-4 text-sm text-muted">
+        <button
+          class="rounded-full p-1 hover:bg-raised disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+          aria-label="Previous page"
+          :disabled="currentPage === 1"
+          @click="onPreviousClick"
+        >
           <IconPrevious :width="20" />
         </button>
-        <p>{{ currentPage }}/{{ totalPage }}</p>
-        <button :disabled="currentPage === totalPage" @click="onNextClick">
+        <p class="tabular-nums">Page {{ currentPage }} of {{ totalPage }}</p>
+        <button
+          class="rounded-full p-1 hover:bg-raised disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+          aria-label="Next page"
+          :disabled="currentPage === totalPage"
+          @click="onNextClick"
+        >
           <IconNext :width="20" />
         </button>
       </div>

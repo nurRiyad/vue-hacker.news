@@ -5,7 +5,6 @@ import { getDomainName } from '@/utils/domain'
 import NewsItemMetadata from '@/components/NewsItemMetadata.vue'
 import { fetchHackerNewsResource } from '@/api/hackerNews'
 
-// set props
 interface Props {
   id: number
 }
@@ -19,20 +18,15 @@ const domainName = getDomainName(url)
 
 <template>
   <NewsItemLayout :score="news.score">
-    <div class="flex items-center font-mono space-x-1">
-      <a
-        :href="url"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-sm sm:text-base sm:truncate font-medium hover:decoration-orange-500"
-        :class="{ 'hover:underline': domainName }"
-      >
-        {{ news.title }}
-      </a>
-      <p v-if="domainName" class="hidden sm:block sm:truncate text-xs sm:text-sm text-slate-500">
-        ({{ domainName }})
-      </p>
-    </div>
-    <NewsItemMetadata :author="news.by" :time="news.time" />
+    <a
+      :href="url"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-base sm:text-base font-medium leading-snug text-ink visited:text-faint underline-offset-2 decoration-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-accent"
+      :class="{ 'hover:underline': domainName }"
+    >
+      {{ news.title }}
+    </a>
+    <NewsItemMetadata :author="news.by" :time="news.time" :domain="domainName" />
   </NewsItemLayout>
 </template>
