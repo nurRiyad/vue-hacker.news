@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type { Comment } from '@/types/Comment'
 import { useFetch } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import type { Comment } from '@/types/Comment'
-import { timeDifferene } from '@/utils/time'
-import NewsLoader from '@/components/NewsLoader.vue'
 import CommentsCom from '@/components/CommentsCom.vue'
+import NewsLoader from '@/components/NewsLoader.vue'
+import { formatCommentCount } from '@/utils/comments'
+import { timeDifferene } from '@/utils/time'
 
 // set props
 interface Props {
@@ -14,7 +15,9 @@ const props = withDefaults(defineProps<Props>(), {
   id: NaN,
 })
 
-const { data: resp } = await useFetch(`https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`)
+const { data: resp } = await useFetch(
+  `https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`,
+)
 const news = ref<Comment>(JSON.parse(resp.value as string))
 
 const countTimedif = computed(() => {
@@ -44,16 +47,12 @@ const kids = computed(() => {
         <span class="hover:underline text-orange-600">{{ news.by || '-' }}</span>
       </RouterLink>
       | {{ countTimedif }} |
-      <span>{{ ttlComment }} Comment</span>
+      <span>{{ formatCommentCount(ttlComment) }}</span>
     </p>
-    <div class="text-xs text-slate-600 " v-html="commnetData" />
-    <div v-if="(ttlComment > 1)" class="text-xs text-orange-600 pt-2 cursor-pointer hover:underline">
-      <p v-if="showReply" @click="(showReply = !showReply)">
-        Hide Comment [-]
-      </p>
-      <p v-else @click="(showReply = !showReply)">
-        Show Reply {{ ttlComment }} [+]
-      </p>
+    <div class="text-xs text-slate-600" v-html="commnetData" />
+    <div v-if="ttlComment > 1" class="text-xs text-orange-600 pt-2 cursor-pointer hover:underline">
+      <p v-if="showReply" @click="showReply = !showReply">Hide Comment [-]</p>
+      <p v-else @click="showReply = !showReply">Show Reply {{ ttlComment }} [+]</p>
     </div>
     <div class="ml-2">
       <div v-if="showReply">
