@@ -7,7 +7,8 @@ const UserLoader = defineAsyncComponent(() => import('@/components/UserLoader.vu
 
 const route = useRoute()
 const userId = computed(() => {
-  return (route.params.userid as string) || ''
+  const id = route.params.userid
+  return Array.isArray(id) ? (id[0] ?? '') : (id ?? '')
 })
 </script>
 
@@ -15,7 +16,7 @@ const userId = computed(() => {
   <div class="flex flex-col bg-white h-full w-full p-3">
     <Suspense>
       <template #default>
-        <User :userid="userId" />
+        <User :key="userId" :userid="userId" />
       </template>
       <template #fallback>
         <UserLoader />

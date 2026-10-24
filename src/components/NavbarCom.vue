@@ -19,7 +19,7 @@ const routeName = computed(() =>
             <img
               class="sm:hidden w-8 object-cover"
               src="@/assets/logo/hackerNews.png"
-              alt="hackerNew logo"
+              alt="Hacker News logo"
             />
             <p class="hidden text-xl font-bold sm:block" :class="{ underline: routeName === '' }">
               HackerNews
@@ -60,7 +60,7 @@ const routeName = computed(() =>
         <RouterLink
           to="/jobs"
           class="hover:text-white hover:font-semibold"
-          :class="{ underline: routeName === 'job' }"
+          :class="{ underline: routeName === 'jobs' }"
         >
           Jobs
         </RouterLink>

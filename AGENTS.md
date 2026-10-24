@@ -20,6 +20,7 @@ npm ci                # install exactly what package-lock.json pins
 npm run dev           # vp dev: dev server at http://localhost:5173
 npm run check         # vp check (format + lint + type-aware check) then vue-tsc: the main command
 npm run fmt           # vp fmt: format everything in place (Oxfmt)
+npm run fmt:check     # vp fmt --check: fail if anything is unformatted (used by CI)
 npm run lint          # vp lint .: Oxlint only
 npm run lint:fix      # vp lint . --fix
 npm run type-check    # vue-tsc for src/ and for vite.config.ts (understands .vue templates)
@@ -49,6 +50,7 @@ Baseline on Node 24: `check`, `test`, and `build` all pass. `check` reports one 
 - Run `vp toolchain` to see bundled tool versions. Docs are online at https://viteplus.dev/guide/ and locally at `node_modules/vite-plus/docs`.
 - If `vp` or the runtime looks broken, run `vp env doctor` (needs the global CLI).
 - Upgrade Vite+ with `vp migrate` (see https://viteplus.dev/guide/upgrade). The `vite` entry in `package.json` and its `overrides` must always point at the same `@voidzero-dev/vite-plus-core` version as `vite-plus`.
+- **Do not remove the `overrides.vite` entry.** It makes every package that depends on `vite` (`@vitejs/plugin-vue`, `@tailwindcss/vite`, `vitest`, `vue-router`) use Vite+'s core instead of installing real Vite. Without it, `npm install` either fails with `ERESOLVE` (when only the `vite` devDependency alias is kept) or installs two copies of Vite. With two copies, `vue-tsc` crashes on `vite.config.ts` ("Debug Failure") because the plugin types come from a different Vite than `defineConfig`. The `devDependencies.vite` alias is not strictly required, but it declares the package that `env.d.ts` (`vite/client`) imports, so keep it too.
 - **Keep `vue-tsc`.** `vp check` type-checks with the native TypeScript compiler (tsgo), which cannot read `.vue` files. Verified on this repo: `vp check` caught a type error in a `.ts` file but missed a bad assignment in a `.vue` script, an unknown method call in a template, an undefined name in a template, and a wrong prop type. `vue-tsc` caught all of them. Most of this app lives in `.vue` files, so removing `vue-tsc` would drop type safety for almost all of it. Revisit if Vite+ adds Vue template type-checking.
 
 ## Project layout
@@ -88,6 +90,15 @@ Follow the surrounding code. `npm run fmt` and `npm run check` enforce formattin
 - Style with Tailwind utility classes. Scoped `<style>` blocks exist only for tiny layout bits. Do not add a CSS framework.
 - Components are `.vue` files in PascalCase. Views are lazy-loaded in the router and heavy children via `defineAsyncComponent`.
 - The HN item endpoint is called with `?print=pretty`, which returns a string that is then `JSON.parse`d. Follow this pattern in existing code. If you change it, change all call sites together.
+
+## CI
+
+[.github/workflows/ci.yml](.github/workflows/ci.yml) runs on every pull request and on pushes to `main`. Format, lint, type check, test, and build are separate jobs that run in parallel, and a final `CI` job fails if any of them fails (use it as the single required check). Each job runs one npm script: `fmt:check`, `lint`, `type-check`, `test`, `build-only`.
+
+- Node comes from `.nvmrc`, so bumping that file bumps CI too.
+- If you add or rename one of those scripts, update the workflow in the same change.
+- A new independent check should be its own job and be added to the `needs` list of the `CI` job.
+- Before pushing, `npm run check`, `npm test`, and `npm run build-only` reproduce the same checks locally. Add `npm run fmt:check` to confirm formatting.
 
 ## Skills
 

@@ -12,11 +12,11 @@ onMounted(() => {
 
 // add meta tags
 const description =
-  'Hacker News is a social news website focusing on computer science and entrepreneurship. This site with built by Al Asad Nur Riyad wiht Vue3, Vue-Router, Pinia, TailwindCss, VueUse'
+  'Hacker News is a social news website focusing on computer science and entrepreneurship. This site was built by Al Asad Nur Riyad with Vue 3, Vue Router, Pinia, Tailwind CSS, and VueUse.'
 const ogTitle =
-  'HackerHews built with Vue3, Vue-Router, Pinia, TailwindCss, VueUse By Al Asad Nur Riyad'
+  'Hacker News built with Vue 3, Vue Router, Pinia, Tailwind CSS, and VueUse by Al Asad Nur Riyad'
 const twitterDescription =
-  'HackerHews built with Vue3, Vue-Router, Pinia, TailwindCss, VueUse By Al Asad Nur Riyad'
+  'Hacker News built with Vue 3, Vue Router, Pinia, Tailwind CSS, and VueUse by Al Asad Nur Riyad'
 const image = 'https://hnews-nurriyad.netlify.app/android-chrome-512x512.png'
 const mySite = 'https://hnews-nurriyad.netlify.app'
 

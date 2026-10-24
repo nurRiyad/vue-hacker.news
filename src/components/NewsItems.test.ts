@@ -89,9 +89,10 @@ describe('NewsItems', () => {
     expect(wrapper.findComponent(NewsItems).emitted('kids')).toEqual([[[101, 102]]])
   })
 
-  it('hides the domain when the story has no url', async () => {
-    const wrapper = await mountItem(makeNews({ url: '' }))
+  it('hides the domain when the story omits its url', async () => {
+    const wrapper = await mountItem(makeNews({ url: undefined }))
 
     expect(wrapper.text()).not.toContain('(')
+    expect(wrapper.get('a').attributes('href')).toBeUndefined()
   })
 })
