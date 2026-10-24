@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { ref } from 'vue'
 import UserPage from '@/views/UserPage.vue'
+import { createPiniaColadaPlugins } from '@/tests/piniaColada'
 
 const useFetchMock = vi.hoisted(() => vi.fn())
 const useHeadMock = vi.hoisted(() => vi.fn())
@@ -42,7 +43,9 @@ describe('UserPage', () => {
     await router.push('/user/alice')
     await router.isReady()
 
-    const wrapper = mount(UserPage, { global: { plugins: [router] } })
+    const wrapper = mount(UserPage, {
+      global: { plugins: [...createPiniaColadaPlugins(), router] },
+    })
     await flushPromises()
 
     await vi.waitFor(() => expect(wrapper.text()).toContain('Username: alice'))

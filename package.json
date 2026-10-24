@@ -17,6 +17,7 @@
     "lint:fix": "vp lint . --fix"
   },
   "dependencies": {
+    "@pinia/colada": "^1.4.8",
     "@vueuse/core": "^15.0.0",
     "@vueuse/head": "^2.0.0",
     "pinia": "^4.1.0",

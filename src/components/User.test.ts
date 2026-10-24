@@ -3,6 +3,7 @@ import { flushPromises, mount, RouterLinkStub } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { defineComponent, h, ref, Suspense } from 'vue'
 import User from '@/components/User.vue'
+import { createPiniaColadaPlugins } from '@/tests/piniaColada'
 
 const useFetchMock = vi.hoisted(() => vi.fn())
 
@@ -20,7 +21,12 @@ const mountUser = async (user: object, userid: string) => {
   const Host = defineComponent({
     render: () => h(Suspense, null, { default: () => h(User, { userid }) }),
   })
-  const wrapper = mount(Host, { global: { stubs: { RouterLink: RouterLinkStub } } })
+  const wrapper = mount(Host, {
+    global: {
+      plugins: createPiniaColadaPlugins(),
+      stubs: { RouterLink: RouterLinkStub },
+    },
+  })
   await flushPromises()
   return wrapper
 }

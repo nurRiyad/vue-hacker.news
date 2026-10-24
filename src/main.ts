@@ -1,4 +1,5 @@
 import { createHead } from '@vueuse/head'
+import { PiniaColada } from '@pinia/colada'
 import { createPinia } from 'pinia'
 
 import { createApp } from 'vue'
@@ -12,6 +13,7 @@ const app = createApp(App)
 const head = createHead()
 
 app.use(createPinia())
+app.use(PiniaColada, { queryOptions: { staleTime: 30_000 } })
 app.use(router)
 app.use(head)
 

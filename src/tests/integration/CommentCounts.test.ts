@@ -6,6 +6,7 @@ import AskItem from '@/components/AskItem.vue'
 import CommentsCom from '@/components/CommentsCom.vue'
 import NewsItems from '@/components/NewsItems.vue'
 import ShowItem from '@/components/ShowItem.vue'
+import { createPiniaColadaPlugins } from '@/tests/piniaColada'
 
 const useFetchMock = vi.hoisted(() => vi.fn())
 
@@ -36,7 +37,12 @@ const mountItem = async (component: object, kids?: Array<number>) => {
   const Host = defineComponent({
     render: () => h(Suspense, null, { default: () => h(component, { id: 1 }) }),
   })
-  const wrapper = mount(Host, { global: { stubs: { RouterLink: RouterLinkStub } } })
+  const wrapper = mount(Host, {
+    global: {
+      plugins: createPiniaColadaPlugins(),
+      stubs: { RouterLink: RouterLinkStub },
+    },
+  })
   await flushPromises()
   return wrapper
 }

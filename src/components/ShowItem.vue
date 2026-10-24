@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useQuery } from '@pinia/colada'
+import { computed, watch } from 'vue'
 import type { Show } from '@/types/Show'
 import NewsItemLayout from '@/components/NewsItemLayout.vue'
-import { fetchHackerNewsResource } from '@/api/hackerNews'
+import QueryError from '@/components/QueryError.vue'
+import { itemQuery } from '@/queries/hackerNews'
 import NewsItemMetadata from '@/components/NewsItemMetadata.vue'
 import { createStoryDescription, type StorySeoMetadata } from '@/utils/seo'
 
@@ -16,19 +19,40 @@ const emit = defineEmits<{
   seo: [metadata: StorySeoMetadata]
 }>()
 
-const news = props.item ?? (await fetchHackerNewsResource<Show>(`item/${props.id}`))
+const {
+  data: queriedNews,
+  error,
+  refresh,
+  refetch,
+} = useQuery(() => itemQuery<Show>(props.id, !props.item))
+if (!props.item) await refresh()
 
-emit('kids', news.kids ?? [])
-emit('seo', {
-  id: news.id,
-  title: news.title,
-  description: createStoryDescription(undefined, news.by, news.score),
-  publishedAt: news.time,
-})
+const news = computed(() => props.item ?? queriedNews.value)
+
+watch(
+  news,
+  (item) => {
+    if (!item) return
+
+    emit('kids', item.kids ?? [])
+    emit('seo', {
+      id: item.id,
+      title: item.title,
+      description: createStoryDescription(undefined, item.by, item.score),
+      publishedAt: item.time,
+    })
+  },
+  { immediate: true },
+)
+
+function retry() {
+  void refetch()
+}
 </script>
 
 <template>
-  <NewsItemLayout :score="news.score">
+  <QueryError v-if="error" @retry="retry" />
+  <NewsItemLayout v-else-if="news" :score="news.score">
     <a
       :href="news.url"
       target="_blank"

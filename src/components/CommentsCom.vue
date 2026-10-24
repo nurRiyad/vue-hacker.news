@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { useQuery } from '@pinia/colada'
+import { computed } from 'vue'
 import type { Comment } from '@/types/Comment'
 import { useToggle } from '@vueuse/core'
 import CommentsCom from '@/components/CommentsCom.vue'
 import NewsLoader from '@/components/NewsLoader.vue'
+import QueryError from '@/components/QueryError.vue'
 import { formatCommentCount } from '@/utils/comments'
-import { fetchHackerNewsResource } from '@/api/hackerNews'
+import { itemQuery } from '@/queries/hackerNews'
 import { formatRelativeTime } from '@/utils/time'
 
 interface Props {
@@ -14,21 +17,28 @@ const props = withDefaults(defineProps<Props>(), {
   id: NaN,
 })
 
-const news = await fetchHackerNewsResource<Comment>(`item/${props.id}`)
+const { data, error, refresh, refetch } = useQuery(itemQuery<Comment>(props.id))
+await refresh()
 
-const createdAt = formatRelativeTime(news.time)
+const news = computed(() => data.value)
+const createdAt = computed(() => formatRelativeTime(news.value?.time ?? 0))
 
-const threadSize = (news.kids?.length ?? 0) + 1
+const threadSize = computed(() => (news.value?.kids?.length ?? 0) + 1)
 
-const commnetData = news.text || 'No comment available'
+const commnetData = computed(() => news.value?.text || 'No comment available')
 
 const [showReply, toggleShowReply] = useToggle(false)
 
-const kids = news.kids ?? []
+const kids = computed(() => news.value?.kids ?? [])
+
+function retry() {
+  void refetch()
+}
 </script>
 
 <template>
-  <div class="px-5 pt-5 pb-2 text-sm">
+  <QueryError v-if="error" @retry="retry" />
+  <div v-else-if="news" class="px-5 pt-5 pb-2 text-sm">
     <p class="mb-2 border-b border-line">
       <RouterLink :to="`/user/${news.by || '-'}`">
         <span class="hover:underline text-accent">{{ news.by || '-' }}</span>

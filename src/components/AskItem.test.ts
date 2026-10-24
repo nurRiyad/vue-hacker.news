@@ -3,6 +3,7 @@ import { flushPromises, mount, RouterLinkStub } from '@vue/test-utils'
 import { describe, expect, it } from 'vite-plus/test'
 import { defineComponent, h, Suspense } from 'vue'
 import AskItem from '@/components/AskItem.vue'
+import { createPiniaColadaPlugins } from '@/tests/piniaColada'
 import type { Ask } from '@/types/Ask'
 
 const ask: Ask = {
@@ -21,7 +22,12 @@ describe('AskItem', () => {
     const Host = defineComponent({
       render: () => h(Suspense, null, { default: () => h(AskItem, { id: ask.id, item: ask }) }),
     })
-    const wrapper = mount(Host, { global: { stubs: { RouterLink: RouterLinkStub } } })
+    const wrapper = mount(Host, {
+      global: {
+        plugins: createPiniaColadaPlugins(),
+        stubs: { RouterLink: RouterLinkStub },
+      },
+    })
     await flushPromises()
     const itemWrapper = wrapper.findComponent(AskItem)
 

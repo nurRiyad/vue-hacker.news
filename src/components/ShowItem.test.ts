@@ -3,6 +3,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vite-plus/test'
 import { defineComponent, h, Suspense } from 'vue'
 import ShowItem from '@/components/ShowItem.vue'
+import { createPiniaColadaPlugins } from '@/tests/piniaColada'
 import type { Show } from '@/types/Show'
 
 const show: Show = {
@@ -21,7 +22,7 @@ describe('ShowItem', () => {
     const Host = defineComponent({
       render: () => h(Suspense, null, { default: () => h(ShowItem, { id: show.id, item: show }) }),
     })
-    const wrapper = mount(Host)
+    const wrapper = mount(Host, { global: { plugins: createPiniaColadaPlugins() } })
     await flushPromises()
     const itemWrapper = wrapper.findComponent(ShowItem)
 

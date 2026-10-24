@@ -1,4 +1,5 @@
-import { computed, ref, watch, type Ref } from 'vue'
+import { useQuery } from '@pinia/colada'
+import { computed, type Ref } from 'vue'
 import { fetchHackerNewsResource } from '@/api/hackerNews'
 
 interface ScoredItem {
@@ -12,33 +13,21 @@ export function useScoreSortedItems<T extends ScoredItem>(
   ids: Readonly<Ref<readonly number[]>>,
   enabled: Readonly<Ref<boolean>>,
 ) {
-  const items = ref<T[]>([]) as Ref<T[]>
-  const isLoading = ref(false)
-  let latestRequest = 0
-
-  watch(
-    [ids, enabled],
-    async ([currentIds, isEnabled]) => {
-      const request = ++latestRequest
-      if (!isEnabled) {
-        items.value = []
-        isLoading.value = false
-        return
-      }
-
-      isLoading.value = true
-      const results = await Promise.allSettled(
-        currentIds.map((id) => fetchHackerNewsResource<T>(`item/${id}`)),
+  const query = useQuery(() => ({
+    key: ['score-sorted-items', ids.value] as const,
+    enabled: enabled.value,
+    query: async () => {
+      const items = await Promise.all(
+        ids.value.map((id) => fetchHackerNewsResource<T>(`item/${id}`)),
       )
-      if (request !== latestRequest) return
-
-      items.value = results
-        .flatMap((result) => (result.status === 'fulfilled' ? [result.value as T] : []))
-        .sort((a, b) => b.score - a.score)
-      isLoading.value = false
+      return items.sort((a, b) => b.score - a.score)
     },
-    { immediate: true },
-  )
+  }))
 
-  return { items, isLoading: computed(() => isLoading.value) }
+  return {
+    items: computed(() => query.data.value ?? []),
+    isLoading: query.isLoading,
+    error: query.error,
+    refetch: query.refetch,
+  }
 }
