@@ -1,86 +1,46 @@
 <script setup lang="ts">
-import { useFetch } from '@vueuse/core'
-import { computed, ref } from 'vue'
 import type { Show } from '@/types/Show'
-import { timeDifferene } from '@/utils/time'
+import NewsItemLayout from '@/components/NewsItemLayout.vue'
+import { fetchHackerNewsResource } from '@/api/hackerNews'
+import NewsItemMetadata from '@/components/NewsItemMetadata.vue'
+import { createStoryDescription, type StorySeoMetadata } from '@/utils/seo'
 
-// set props
 interface Props {
   id: number
 }
-const props = withDefaults(defineProps<Props>(), {
-  id: NaN,
-})
+const props = defineProps<Props>()
 
-// set emet
-const emit = defineEmits(['kids'])
+const emit = defineEmits<{
+  kids: [kids: number[]]
+  seo: [metadata: StorySeoMetadata]
+}>()
 
-const title = ref('no title')
-const score = ref(0)
-const author = ref('no author available')
-const time = ref(0)
+const news = await fetchHackerNewsResource<Show>(`item/${props.id}`)
 
-const { data: resp } = await useFetch(`https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`)
-const news = ref<Show>(JSON.parse(resp.value as string))
-
-title.value = news.value.title
-score.value = news.value.score
-author.value = news.value.by
-time.value = news.value.time
-
-emit('kids', news.value.kids || [])
-
-const url = computed(() => news.value?.url || '#')
-const countCommet = computed(() => {
-  if (news.value?.kids?.length <= 1)
-    return `${news.value?.kids?.length} Comment`
-  else if (news.value?.kids?.length >= 1)
-    return `${news.value?.kids?.length} Comments`
-  else return '0 Comment'
-})
-
-const creatTime = computed(() => {
-  return timeDifferene(time.value)
+emit('kids', news.kids ?? [])
+emit('seo', {
+  id: news.id,
+  title: news.title,
+  description: createStoryDescription(undefined, news.by, news.score),
+  publishedAt: news.time,
 })
 </script>
 
 <template>
-  <div class="border-b-2 card-layout">
-    <div class="flex justify-center items-center w-12 sm:w-20 p-5">
-      <p class="text-center font-semibold text-[#f3621d] text-sm sm:text-xl">
-        {{ score }}
-      </p>
-    </div>
-    <div class="flex flex-col justify-center sm:overflow-hidden sm:truncate my-4 sm:my-0">
-      <div class="flex items-center font-mono space-x-1">
-        <a :href="url" target="_blank" class="text-sm  sm:text-base sm:truncate  font-medium hover:decoration-orange-500 hover:underline">
-          {{ title }}
-        </a>
-      </div>
-      <div class="flex text-xs sm:text-sm text-slate-500  ">
-        <router-link :to="`/user/${author}`">
-          by <span class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">{{ author }}</span>
-        </router-link>
-        <p class="px-1 sm:px-4">
-          |
-        </p>
-        <router-link :to="`/show/${id}/details`">
-          <p class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500" data-testid = "comment">
-            {{ countCommet }} 
-          </p>
-        </router-link>
-        <p class="px-1 sm:px-4">
-          |
-        </p>
-        <p><span class="hidden sm:inline">created</span> {{ creatTime }}</p>
-      </div>
-    </div>
-  </div>
+  <NewsItemLayout :score="news.score">
+    <a
+      :href="news.url"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-base sm:text-base font-medium leading-snug text-ink visited:text-faint underline-offset-2 decoration-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-accent hover:underline"
+    >
+      {{ news.title }}
+    </a>
+    <NewsItemMetadata
+      :author="news.by"
+      :time="news.time"
+      :kids="news.kids"
+      :comments-to="`/show/${id}`"
+    />
+  </NewsItemLayout>
 </template>
-
-<style scoped>
-.card-layout{
-  display: grid;
-  grid-template-columns: 1fr 11fr;
-}
-</style>

@@ -1,10 +1,9 @@
 export interface Comment {
-  by: string
+  by?: string
   id: number
-  kids: Array<number>
+  kids?: Array<number>
   parent: number
-  text: string
+  text?: string
   time: number
   type: string
-
 }

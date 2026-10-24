@@ -1,39 +1,42 @@
 {
   "name": "hacker-news",
   "version": "v1.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "run-p type-check build-only",
-    "preview": "vite preview",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "dev": "vp dev",
+    "build": "vp run type-check && vp build",
+    "preview": "vp preview",
+    "build-only": "vp build",
+    "type-check": "vue-tsc --noEmit -p tsconfig.json && vue-tsc --noEmit -p tsconfig.config.json",
+    "check": "vp check && vp run type-check",
+    "test": "vp test",
+    "test:watch": "vp test watch",
+    "fmt": "vp fmt",
+    "fmt:check": "vp fmt --check",
+    "lint": "vp lint .",
+    "lint:fix": "vp lint . --fix"
   },
   "dependencies": {
-    "@vueuse/core": "^9.5.0",
-    "@vueuse/head": "^1.0.22",
-    "moment": "^2.29.4",
-    "pinia": "^2.0.23",
-    "vue": "^3.2.41",
-    "vue-content-loader": "^2.0.1",
-    "vue-router": "^4.1.5"
+    "@vueuse/core": "^15.0.0",
+    "@vueuse/head": "^2.0.0",
+    "pinia": "^4.1.0",
+    "vue": "^3.5.44",
+    "vue-router": "^5.4.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.29.4",
-    "@types/node": "^16.11.68",
-    "@vitejs/plugin-vue": "^3.1.2",
-    "@vue/tsconfig": "^0.1.3",
-    "autoprefixer": "^10.4.13",
-    "cypress": "^12.14.0",
-    "eslint": "^8.27.0",
-    "npm-run-all": "^4.1.5",
-    "postcss": "^8.4.18",
-    "tailwindcss": "^3.2.2",
-    "typescript": "~4.7.4",
-    "vite": "^3.1.8",
-    "vue-tsc": "^1.0.11"
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^24.0.0",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "@vue/test-utils": "^2.5.1",
+    "@vue/tsconfig": "^0.9.1",
+    "happy-dom": "^21.0.4",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.3",
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.4.0",
+    "vite-plus": "1.4.0",
+    "vue-tsc": "^3.3.13"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.4.0"
   }
 }

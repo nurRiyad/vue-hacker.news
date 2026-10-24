@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useFetch } from '@vueuse/core'
-import { computed, ref } from 'vue'
 import type { Comment } from '@/types/Comment'
-import { timeDifferene } from '@/utils/time'
-import NewsItemLoader from '@/components/NewsItemLoader.vue'
+import { useToggle } from '@vueuse/core'
 import CommentsCom from '@/components/CommentsCom.vue'
+import NewsLoader from '@/components/NewsLoader.vue'
+import { formatCommentCount } from '@/utils/comments'
+import { fetchHackerNewsResource } from '@/api/hackerNews'
+import { formatRelativeTime } from '@/utils/time'
 
-// set props
 interface Props {
   id: number
 }
@@ -14,47 +14,38 @@ const props = withDefaults(defineProps<Props>(), {
   id: NaN,
 })
 
-const { data: resp } = await useFetch(`https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`)
-const news = ref<Comment>(JSON.parse(resp.value as string))
+const news = await fetchHackerNewsResource<Comment>(`item/${props.id}`)
 
-const countTimedif = computed(() => {
-  return timeDifferene(news.value.time)
-})
+const createdAt = formatRelativeTime(news.time)
 
-const ttlComment = computed(() => {
-  const childCommnet = news.value?.kids?.length || 0
-  return childCommnet + 1
-})
+const threadSize = (news.kids?.length ?? 0) + 1
 
-const commnetData = computed(() => {
-  return news.value?.text || 'No comment availabe'
-})
+const commnetData = news.text || 'No comment available'
 
-const showReply = ref(false)
+const [showReply, toggleShowReply] = useToggle(false)
 
-const kids = computed(() => {
-  return news.value?.kids || []
-})
+const kids = news.kids ?? []
 </script>
 
 <template>
-  <div class="bg-white px-5 pt-5 pb-2 text-sm">
-    <p class="mb-2 border-b">
+  <div class="px-5 pt-5 pb-2 text-sm">
+    <p class="mb-2 border-b border-line">
       <RouterLink :to="`/user/${news.by || '-'}`">
-        <span class="hover:underline text-orange-600">{{ news.by || '-' }}</span>
+        <span class="hover:underline text-accent">{{ news.by || '-' }}</span>
       </RouterLink>
-      | {{ countTimedif }} |
-      <span>{{ ttlComment }} Comment</span>
+      | {{ createdAt }} |
+      <span>{{ formatCommentCount(threadSize) }}</span>
     </p>
-    <div class="text-xs text-slate-600 " v-html="commnetData" />
-    <div v-if="(ttlComment > 1)" class="text-xs text-orange-600 pt-2 cursor-pointer hover:underline">
-      <p v-if="showReply" @click="(showReply = !showReply)">
-        Hide Comment [-]
-      </p>
-      <p v-else @click="(showReply = !showReply)">
-        Show Reply {{ ttlComment }} [+]
-      </p>
-    </div>
+    <div class="text-xs text-muted" v-html="commnetData" />
+    <button
+      v-if="threadSize > 1"
+      type="button"
+      class="text-xs text-accent pt-2 cursor-pointer hover:underline"
+      :aria-expanded="showReply"
+      @click="toggleShowReply()"
+    >
+      {{ showReply ? 'Hide Comment [-]' : `Show Reply ${threadSize} [+]` }}
+    </button>
     <div class="ml-2">
       <div v-if="showReply">
         <div v-for="kid in kids" :key="kid" class="space-y-10">
@@ -63,7 +54,7 @@ const kids = computed(() => {
               <CommentsCom :id="kid" />
             </template>
             <template #fallback>
-              <NewsItemLoader />
+              <NewsLoader />
             </template>
           </Suspense>
         </div>

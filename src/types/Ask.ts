@@ -1,12 +1,11 @@
 export interface Ask {
   by: string
-  descendants: number
+  descendants?: number
   id: number
-  kids: Array<number>
+  kids?: Array<number>
   score: number
-  text: string
+  text?: string
   time: number
   title: string
   type: string
-
 }
