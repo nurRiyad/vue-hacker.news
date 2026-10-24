@@ -67,7 +67,6 @@ describe('CommentsCom thread size', () => {
     useFetchMock.mockReset()
   })
 
-  // The thread size counts the comment itself plus its direct replies.
   it.each([
     [undefined, '1 Comment'],
     [[10], '2 Comments'],

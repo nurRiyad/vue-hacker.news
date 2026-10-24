@@ -11,7 +11,6 @@ Hacker News clone built with [Vue 3](https://vuejs.org), [Pinia](https://pinia.v
 <p align="center">
   <a href="https://hnews-nurriyad.netlify.app" target="_blank">
     <img width="1090" alt="Hacker News front page" src="./src/assets/previews/root.png">
-    <img width="1090" alt="Hacker News comments page" src="./src/assets/previews/comment.png">
     <br>
     Live Demo
   </a>
