@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useNewStore } from '@/stores/news'
 import NewsLoader from '@/components/NewsLoader.vue'
+import { useNewStore } from '@/stores/news'
 
 const NewsItems = defineAsyncComponent(() => import('@/components/NewsItems.vue'))
 const JobItem = defineAsyncComponent(() => import('@/components/JobItem.vue'))
@@ -14,60 +14,52 @@ const IconPrevious = defineAsyncComponent(() => import('@/components/icons/Previ
 const EmptyNews = defineAsyncComponent(() => import('@/components/EmptyNews.vue'))
 
 const route = useRoute()
-const newsType = computed(() => Array.isArray(route.params.type) ? route.params.type[0] : route.params.type || 'top')
+const newsType = computed(() =>
+  Array.isArray(route.params.type) ? route.params.type[0] : route.params.type || 'top',
+)
 
 const newsStore = useNewStore()
-const { topNewsList, newNewsList, bestNewsList, topAsk, topJobs, topShow, isNewsListFetching } = storeToRefs(newsStore)
+const { topNewsList, newNewsList, bestNewsList, topAsk, topJobs, topShow, isNewsListFetching } =
+  storeToRefs(newsStore)
 
 const newsList = computed(() => {
-  if (newsType.value === 'top')
-    return topNewsList.value
-  else if (newsType.value === 'new')
-    return newNewsList.value
-  else if (newsType.value === 'best')
-    return bestNewsList.value
-  else if (newsType.value === 'show')
-    return topShow.value
-  else if (newsType.value === 'ask')
-    return topAsk.value
-  else if (newsType.value === 'jobs')
-    return topJobs.value
+  if (newsType.value === 'top') return topNewsList.value
+  else if (newsType.value === 'new') return newNewsList.value
+  else if (newsType.value === 'best') return bestNewsList.value
+  else if (newsType.value === 'show') return topShow.value
+  else if (newsType.value === 'ask') return topAsk.value
+  else if (newsType.value === 'jobs') return topJobs.value
   return []
 })
 
 const currentPage = ref(1)
 const totalPage = computed(() => {
   const totalNews = newsList.value?.length ?? 1
-  if (totalNews % 20 === 0)
-    return totalNews / 20
+  if (totalNews % 20 === 0) return totalNews / 20
   else return Math.floor(totalNews / 20) + 1
 })
 
 const filteredNews = computed(() => {
   const fst = (currentPage.value - 1) * 20
-  const lst = (currentPage.value * 20) - 1
+  const lst = currentPage.value * 20 - 1
 
   return newsList.value?.filter((val, idx) => {
-    if (idx <= lst && idx >= fst)
-      return true
+    if (idx <= lst && idx >= fst) return true
     else return false
   })
 })
 
 const isNewsEmpty = computed(() => {
-  if (filteredNews.value?.length > 0)
-    return false
+  if (filteredNews.value?.length > 0) return false
   else return true
 })
 
-const onNextClick = () => {
-  if (currentPage.value !== totalPage.value)
-    currentPage.value += 1
+function onNextClick() {
+  if (currentPage.value !== totalPage.value) currentPage.value += 1
 }
 
-const onPreviousClick = () => {
-  if (currentPage.value !== 1)
-    currentPage.value -= 1
+function onPreviousClick() {
+  if (currentPage.value !== 1) currentPage.value -= 1
 }
 </script>
 
@@ -100,7 +92,7 @@ const onPreviousClick = () => {
         <button :disabled="currentPage === 1" @click="onPreviousClick">
           <IconPrevious :width="20" />
         </button>
-        <p> {{ currentPage }}/{{ totalPage }}</p>
+        <p>{{ currentPage }}/{{ totalPage }}</p>
         <button :disabled="currentPage === totalPage" @click="onNextClick">
           <IconNext :width="20" />
         </button>

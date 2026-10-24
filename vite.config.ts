@@ -1,11 +1,33 @@
-import { URL, fileURLToPath } from 'node:url'
+import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
+import { defineConfig, lazyPlugins } from 'vite-plus'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  fmt: {
+    semi: false,
+    singleQuote: true,
+    ignorePatterns: ['public/**', 'src/assets/**', '.agents/**', '.claude/**'],
+  },
+  lint: {
+    plugins: ['oxc', 'typescript', 'unicorn', 'import', 'vue'],
+    categories: {
+      correctness: 'error',
+    },
+    rules: {
+      'no-console': 'warn',
+    },
+    env: {
+      browser: true,
+    },
+    ignorePatterns: ['dist/**', 'public/**', '.agents/**', '.claude/**'],
+    options: {
+      typeAware: true,
+      typeCheck: true,
+    },
+  },
+  plugins: lazyPlugins(() => [vue(), tailwindcss()]),
   preview: {
     host: true,
     port: 4173,

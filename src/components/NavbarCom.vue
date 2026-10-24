@@ -4,7 +4,9 @@ import { RouterLink, useRoute } from 'vue-router'
 
 const route = useRoute()
 
-const routeName = computed(() => Array.isArray(route.params.type) ? route.params.type[0] : route.params.type || '')
+const routeName = computed(() =>
+  Array.isArray(route.params.type) ? route.params.type[0] : route.params.type || '',
+)
 </script>
 
 <template>
@@ -15,9 +17,10 @@ const routeName = computed(() => Array.isArray(route.params.type) ? route.params
         <RouterLink to="/">
           <div class="flex">
             <img
-              class="sm:hidden w-8 object-cover
-            " src="@/assets/logo/hackerNews.png" alt="hackerNew logo"
-            >
+              class="sm:hidden w-8 object-cover"
+              src="@/assets/logo/hackerNews.png"
+              alt="hackerNew logo"
+            />
             <p class="hidden text-xl font-bold sm:block" :class="{ underline: routeName === '' }">
               HackerNews
             </p>
@@ -25,33 +28,38 @@ const routeName = computed(() => Array.isArray(route.params.type) ? route.params
         </RouterLink>
       </div>
       <!-- Right Navbar -->
-      <div class="flex flex-row space-x-4 ">
+      <div class="flex flex-row space-x-4">
         <RouterLink
-          to="/new" class="hover:text-white hover:font-semibold"
+          to="/new"
+          class="hover:text-white hover:font-semibold"
           :class="{ underline: routeName === 'new' }"
         >
           New
         </RouterLink>
         <RouterLink
-          to="/best" class="hover:text-white hover:font-semibold"
+          to="/best"
+          class="hover:text-white hover:font-semibold"
           :class="{ underline: routeName === 'best' }"
         >
           Best
         </RouterLink>
         <RouterLink
-          to="/show" class="hover:text-white hover:font-semibold"
+          to="/show"
+          class="hover:text-white hover:font-semibold"
           :class="{ underline: routeName === 'show' }"
         >
           Show
         </RouterLink>
         <RouterLink
-          to="/ask" class="hover:text-white hover:font-semibold"
+          to="/ask"
+          class="hover:text-white hover:font-semibold"
           :class="{ underline: routeName === 'ask' }"
         >
           Ask
         </RouterLink>
         <RouterLink
-          to="/jobs" class="hover:text-white hover:font-semibold"
+          to="/jobs"
+          class="hover:text-white hover:font-semibold"
           :class="{ underline: routeName === 'job' }"
         >
           Jobs

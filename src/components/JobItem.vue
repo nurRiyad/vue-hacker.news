@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { Jobs } from '@/types/Jobs'
 import { useFetch } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import type { Jobs } from '@/types/Jobs'
 import { timeDifferene } from '@/utils/time'
 
 // set props
@@ -18,7 +18,9 @@ const author = ref('no author available')
 const time = ref(0)
 const url = ref('')
 
-const { data: resp } = await useFetch(`https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`)
+const { data: resp } = await useFetch(
+  `https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`,
+)
 const news = ref<Jobs>(JSON.parse(resp.value as string))
 
 title.value = news.value.title
@@ -30,8 +32,7 @@ url.value = news.value.url
 const getDomainName = computed(() => {
   if (url.value) {
     const splitedUrl = url.value.split('/')
-    if (splitedUrl.length >= 3)
-      return splitedUrl[2]
+    if (splitedUrl.length >= 3) return splitedUrl[2]
   }
   return ''
 })
@@ -41,8 +42,7 @@ const creatTime = computed(() => {
 })
 
 const isValidUrl = computed(() => {
-  if (getDomainName.value === '')
-    return false
+  if (getDomainName.value === '') return false
   else return true
 })
 </script>
@@ -55,29 +55,35 @@ const isValidUrl = computed(() => {
       </p>
     </div>
     <div class="flex flex-col justify-center sm:overflow-hidden sm:truncate my-4 sm:my-0">
-      <div class="flex items-center font-mono space-x-1  ">
-        <a :href="url" target="_blank" class="text-sm  sm:text-base sm:truncate  font-medium hover:decoration-orange-500 " :class="{ 'hover:underline': isValidUrl }">
+      <div class="flex items-center font-mono space-x-1">
+        <a
+          :href="url"
+          target="_blank"
+          class="text-sm sm:text-base sm:truncate font-medium hover:decoration-orange-500"
+          :class="{ 'hover:underline': isValidUrl }"
+        >
           {{ title }}
         </a>
         <p v-if="isValidUrl" class="hidden sm:block sm:truncate text-xs sm:text-sm text-slate-500">
           ({{ getDomainName }})
         </p>
       </div>
-      <div class="flex text-xs sm:text-sm text-slate-500  ">
+      <div class="flex text-xs sm:text-sm text-slate-500">
         <router-link :to="`/user/${author}`">
-          by <span class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">{{ author }}</span>
+          by
+          <span class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">{{
+            author
+          }}</span>
         </router-link>
-        <p class="px-1 sm:px-4">
-          |
-        </p>
-        <p><span class="hidden sm:inline">created</span>  {{ creatTime }}</p>
+        <p class="px-1 sm:px-4">|</p>
+        <p><span class="hidden sm:inline">created</span> {{ creatTime }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.card-layout{
+.card-layout {
   display: grid;
   grid-template-columns: 1fr 11fr;
 }

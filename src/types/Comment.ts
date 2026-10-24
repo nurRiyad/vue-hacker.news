@@ -6,5 +6,4 @@ export interface Comment {
   text: string
   time: number
   type: string
-
 }

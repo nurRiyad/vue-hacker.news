@@ -16,20 +16,18 @@ const newid = computed(() => {
 })
 
 const detailsPageType = computed(() => {
-  if (route.path.includes('/ask/'))
-    return 'ask'
-  else if (route.path.includes('/show/'))
-    return 'show'
+  if (route.path.includes('/ask/')) return 'ask'
+  else if (route.path.includes('/show/')) return 'show'
   else return 'news'
 })
 
 const kids = ref<Array<number>>([])
-const setKids = (val: Array<number>) => {
+function setKids(val: Array<number>) {
   kids.value = val
 }
 
 const text = ref('')
-const setText = (val: string) => {
+function setText(val: string) {
   text.value = val
 }
 </script>
