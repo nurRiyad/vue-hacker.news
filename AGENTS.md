@@ -38,7 +38,7 @@ Baseline on Node 24: `check`, `test`, and `build` all pass. `check` reports one 
 - Tests run with `vp test` (Vitest 5, bundled in `vite-plus`). Do not install `vitest` separately. Import test APIs from `vite-plus/test`.
 - Put tests next to the code as `*.test.ts` (for example `src/utils/time.test.ts`, `src/stores/news.test.ts`, `src/components/NewsItems.test.ts`, `src/components/CommentCounts.test.ts`).
 - Component tests use `@vue/test-utils` and the `happy-dom` environment, enabled per file with a `// @vitest-environment happy-dom` first line. Pure logic and store tests stay in the default Node environment.
-- Mock the network by mocking `useFetch` from `@vueuse/core` (`vi.hoisted` + `vi.mock('@vueuse/core', ...)`). It resolves to `{ data: ref(JSON string) }` because the HN endpoint is called with `?print=pretty`. Never hit the real HN API in tests.
+- Mock the network by mocking `useFetch` from `@vueuse/core` (`vi.hoisted` + `vi.mock('@vueuse/core', ...)`). It resolves to `{ data: ref(parsed JSON) }` (`fetchHackerNewsResource` calls `.json()`). Never hit the real HN API in tests.
 - Item components use top-level `await`, so mount them inside `<Suspense>` (see `NewsItems.test.ts`) and `await flushPromises()`.
 - Tests assert real behavior, so when you change behavior, change its test in the same edit. Cover the "missing field" case: the HN API omits `kids`, `url`, `text` and similar fields entirely when they are empty, so `undefined` is a normal value, not an edge case.
 
@@ -58,8 +58,7 @@ Baseline on Node 24: `check`, `test`, and `build` all pass. `check` reports one 
 ```
 src/
   main.ts            app bootstrap (Pinia, router, @vueuse/head)
-  App.vue            shell: navbar, <RouterView>, footer, <head> meta, triggers fetchAllNews()
-  router/index.ts    all routes, lazy-loaded views
+  App.vue            shell: navbar, <RouterView>, footer,   <head> meta  router/index.ts    all routes, lazy-loaded views
   stores/news.ts     Pinia store `useNewStore`: ID lists for top/new/best/ask/show/jobs
   views/             route-level pages (TheNews, NewsDetails, UserPage, NotFount)
   components/        item cards (NewsItems, AskItem, ShowItem, JobItem), CommentsCom,
@@ -72,7 +71,7 @@ public/              static assets, `_redirects` (Netlify SPA fallback)
 
 ## How data flows
 
-1. `App.vue` calls `newsStore.fetchAllNews()` on mount. The store fetches only the **ID lists** for each category.
+1. `views/TheNews.vue` calls `newsStore.fetchNews(type)` for the current category (on mount and on category change). The store fetches only that category's **ID list** and caches it.
 2. `views/TheNews.vue` picks a list from the `:type` route param, paginates it client-side (20 per page), and renders one item component per ID.
 3. Each item component (`NewsItems`, `AskItem`, `ShowItem`, `JobItem`, `CommentsCom`) fetches its **own item** with top-level `await fetchHackerNewsResource(...)`. That shared helper uses VueUse `useFetch`. Async item components are wrapped in `<Suspense>` with `NewsLoader` as the fallback.
 4. `views/NewsDetails.vue` renders the item, then comment IDs (`kids`) are rendered recursively via `CommentsCom`.
@@ -89,7 +88,7 @@ Follow the surrounding code. `npm run fmt` and `npm run check` enforce formattin
 - API response shapes go in `src/types/`. Do not use `any`.
 - Style with Tailwind utility classes. Keep scoped `<style>` blocks small and use them for component-specific styling that utility classes do not cover. Do not add a CSS framework.
 - Components are `.vue` files in PascalCase. Views are lazy-loaded in the router and heavy children via `defineAsyncComponent`.
-- The HN item endpoint is called with `?print=pretty`, which returns a string that is then `JSON.parse`d. Follow this pattern in existing code. If you change it, change all call sites together.
+- HN endpoints are called without `?print=pretty`: it only inflates the payload and the data is parsed with `useFetch().json()` either way.
 
 ## CI
 

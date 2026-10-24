@@ -1,14 +1,7 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head'
-import { onMounted } from 'vue'
 import FooterCom from '@/components/FooterCom.vue'
 import NavbarCom from '@/components/NavbarCom.vue'
-import { useNewStore } from '@/stores/news'
-
-const newsStore = useNewStore()
-onMounted(() => {
-  newsStore.fetchAllNews()
-})
 
 useHead({
   htmlAttrs: {
