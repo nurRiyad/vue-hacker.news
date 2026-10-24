@@ -9,4 +9,4 @@ The full project guide is in [AGENTS.md](../AGENTS.md). Read it first. The essen
 - Tests are `*.test.ts` files next to the code, run by `vp test`. Import from `vite-plus/test` and mock `useFetch` from `@vueuse/core`. See the Testing section in `AGENTS.md`.
 - Format with `npm run fmt` (Oxfmt: no semicolons, single quotes). Use the `@/` alias for `src/`.
 - Style with Tailwind classes only. Type API responses in `src/types/`. No `any`.
-- Do not rename the typo'd identifiers (`NotFount`, `useNewStore`, `timeDifferene`, `robot.txt`), upgrade the build toolchain, or add `v-html` on unsanitised content unless asked.
+- Do not rename the typo'd identifiers (`NotFount`, `useNewStore`, `robot.txt`), upgrade the build toolchain, or add `v-html` on unsanitised content unless asked.

@@ -6,10 +6,10 @@
     <img width="200" alt="Vue logo" src="./src/assets/previews/logo.png">
 </p>
 
-Hacker News clone built with [Vue3](https://vuejs.org), [Pinia](https://pinia.vuejs.org/), [Tailwind](https://tailwindcss.com/) & [VueUse](https://vueuse.org/)
+Hacker News clone built with [Vue 3](https://vuejs.org), [Pinia](https://pinia.vuejs.org/), [Tailwind](https://tailwindcss.com/) & [VueUse](https://vueuse.org/)
 
 <p align="center">
-  <a href="https://hnews-nurriyad.netlify.com" target="_blank">
+  <a href="https://hnews-nurriyad.netlify.app" target="_blank">
     <img width="1090" alt="Hacker News front page" src="./src/assets/previews/root.png">
     <img width="1090" alt="Hacker News comments page" src="./src/assets/previews/comment.png">
     <br>
@@ -28,8 +28,8 @@ https://hnews-nurriyad.netlify.app/
 - Client Side Rendering
 - Vite-based hot module replacement (HMR) dev environment
 - Deploys anywhere with zero config Netlify
-- Content loader
-- Lazy load comment
+- SVG skeleton loaders
+- Lazy-loaded comment threads
 
 ## Build Setup
 

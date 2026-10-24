@@ -7,7 +7,7 @@ Guidance for AI coding agents working in this repo.
 A client-side Hacker News clone. It reads the public [HN Firebase API](https://github.com/HackerNews/API) directly from the browser. There is no backend and no SSR. It is deployed on Netlify (`public/_redirects` is the SPA fallback) and ships a Dockerfile that runs `vp preview`.
 
 - Vue 3 (`<script setup lang="ts">`), vue-router 5, Pinia 4 (setup-style store)
-- Tailwind CSS 4 (via `@tailwindcss/vite`, CSS-first config in `src/assets/main.css`), `@vueuse/core` (`useFetch`), `@vueuse/head`, `moment`
+- Tailwind CSS 4 (via `@tailwindcss/vite`, CSS-first config in `src/assets/main.css`), `@vueuse/core`, `@vueuse/head`
 - [Vite+](https://viteplus.dev) (`vite-plus`, project-local `vp` CLI) for dev server, build, lint (Oxlint), format (Oxfmt), and tests (Vitest). Vite itself is aliased to `@voidzero-dev/vite-plus-core`.
 - TypeScript 6 with `vue-tsc` 3 for type-checking `.vue` files
 
@@ -65,7 +65,7 @@ src/
   components/        item cards (NewsItems, AskItem, ShowItem, JobItem), CommentsCom,
                      User, loaders (*Loader.vue), icons/
   types/             API response interfaces (News, Ask, Show, Jobs, Comment, User)
-  utils/time.ts      `timeDifferene()` relative-time helper
+  utils/time.ts      `formatRelativeTime()` helper backed by VueUse `formatTimeAgo()`
   utils/comments.ts  `formatCommentCount()`: "0 Comments" / "1 Comment" / "N Comments". Use it for every comment label, never inline the plural logic
 public/              static assets, `_redirects` (Netlify SPA fallback)
 ```
@@ -74,7 +74,7 @@ public/              static assets, `_redirects` (Netlify SPA fallback)
 
 1. `App.vue` calls `newsStore.fetchAllNews()` on mount. The store fetches only the **ID lists** for each category.
 2. `views/TheNews.vue` picks a list from the `:type` route param, paginates it client-side (20 per page), and renders one item component per ID.
-3. Each item component (`NewsItems`, `AskItem`, `ShowItem`, `JobItem`, `CommentsCom`) fetches its **own item** with a top-level `await useFetch(...)` and is wrapped in `<Suspense>` with `NewsLoader` as the fallback.
+3. Each item component (`NewsItems`, `AskItem`, `ShowItem`, `JobItem`, `CommentsCom`) fetches its **own item** with top-level `await fetchHackerNewsResource(...)`. That shared helper uses VueUse `useFetch`. Async item components are wrapped in `<Suspense>` with `NewsLoader` as the fallback.
 4. `views/NewsDetails.vue` renders the item, then comment IDs (`kids`) are rendered recursively via `CommentsCom`.
 
 Routes: `/`, `/:type` (top|new|best|show|ask|jobs), `/news/:newsid`, `/show/:newsid`, `/ask/:newsid`, `/user/:userid`, and a catch-all not-found.
@@ -87,7 +87,7 @@ Follow the surrounding code. `npm run fmt` and `npm run check` enforce formattin
 - Use `<script setup lang="ts">`, with `defineProps` via an `interface Props` plus `withDefaults`.
 - Import with the `@/` alias (maps to `src/`), and use `import type` for types.
 - API response shapes go in `src/types/`. Do not use `any`.
-- Style with Tailwind utility classes. Scoped `<style>` blocks exist only for tiny layout bits. Do not add a CSS framework.
+- Style with Tailwind utility classes. Keep scoped `<style>` blocks small and use them for component-specific styling that utility classes do not cover. Do not add a CSS framework.
 - Components are `.vue` files in PascalCase. Views are lazy-loaded in the router and heavy children via `defineAsyncComponent`.
 - The HN item endpoint is called with `?print=pretty`, which returns a string that is then `JSON.parse`d. Follow this pattern in existing code. If you change it, change all call sites together.
 
@@ -112,8 +112,8 @@ Restore them with `npx skills experimental_install`, and update them with `npx s
 
 ## Things to know before editing
 
-- **Intentional typos in names.** `NotFount.vue`, `useNewStore`, `timeDifferene`, `commnetData`, `public/robot.txt`. Do not rename them as a drive-by. Rename only when asked, and update every reference.
-- **`@unhead/vue` vs `@vueuse/head`.** `main.ts` installs `@vueuse/head`'s `createHead()`, while `App.vue` imports `useHead` from `@unhead/vue`. `@unhead/vue` is a transitive dependency and not listed in `package.json`. Do not change this without testing that the `<head>` meta still works.
+- **Intentional typos in names.** `NotFount.vue`, `useNewStore`, `commnetData`, `public/robot.txt`. Do not rename them as a drive-by. Rename only when asked, and update every reference.
+- **Head management.** `main.ts` installs `@vueuse/head` with `createHead()`. Import `useHead` from the declared `@vueuse/head` dependency in app and route components.
 - **`v-html` on API content** in `User.vue`, `CommentsCom.vue`, and `NewsDetails.vue`. HN returns HTML, but it is untrusted. Never add new `v-html` usages without sanitising. Flag any you find.
 - **TypeScript is held at 6.x.** `vue-tsc` 3 does not work with TypeScript 7 (the native compiler), so do not bump `typescript` to 7 until `vue-tsc` supports it. `@types/node` follows the Node 24 runtime, not the latest major.
 - **Tailwind 4 has no `tailwind.config.js` or PostCSS config.** Theme and plugins go in CSS (`src/assets/main.css`) with `@theme` and `@plugin`.

@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+/* Single place to tweak the look: a GitHub-dark inspired palette with HN orange as the accent. */
+@theme {
+  --font-sans:
+    ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, "Liberation Mono",
+    monospace;
+  --color-page: #0d1117;
+  --color-surface: #161b22;
+  --color-raised: #21262d;
+  --color-line: #30363d;
+  --color-ink: #e6edf3;
+  --color-muted: #8b949e;
+  --color-faint: #6e7681;
+  --color-accent: #ff8a3d;
+  --color-accent-soft: #3b2312;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-page);
+  color: var(--color-ink);
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-page);
+}
