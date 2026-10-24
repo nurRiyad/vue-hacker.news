@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { Ask } from '@/types/Ask'
-import { useFetch } from '@vueuse/core'
-import { formatCommentCount } from '@/utils/comments'
-import { timeDifferene } from '@/utils/time'
 import NewsItemLayout from '@/components/NewsItemLayout.vue'
+import NewsItemMetadata from '@/components/NewsItemMetadata.vue'
+import { fetchHackerNewsResource } from '@/api/hackerNews'
 
 // set props
 interface Props {
@@ -14,17 +13,10 @@ const props = defineProps<Props>()
 // set emet
 const emit = defineEmits<{ kids: [kids: number[]]; text: [text: string] }>()
 
-const { data: resp } = await useFetch(
-  `https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`,
-)
-const news = JSON.parse(resp.value as string) as Ask
-const author = news.by || 'no author available'
+const news = await fetchHackerNewsResource<Ask>(`item/${props.id}`)
 
 emit('kids', news.kids ?? [])
 emit('text', news.text ?? '')
-
-const commentCount = formatCommentCount(news.kids?.length)
-const createdAt = timeDifferene(news.time)
 </script>
 
 <template>
@@ -37,21 +29,11 @@ const createdAt = timeDifferene(news.time)
         {{ news.title }}
       </router-link>
     </div>
-    <div class="flex text-xs sm:text-sm text-slate-500">
-      <router-link :to="`/user/${author}`">
-        by
-        <span class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">{{
-          author
-        }}</span>
-      </router-link>
-      <p class="px-1 sm:px-4">|</p>
-      <router-link :to="`/ask/${id}`">
-        <p class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">
-          {{ commentCount }}
-        </p>
-      </router-link>
-      <p class="px-1 sm:px-4">|</p>
-      <p><span class="hidden sm:inline">created</span> {{ createdAt }}</p>
-    </div>
+    <NewsItemMetadata
+      :author="news.by"
+      :time="news.time"
+      :kids="news.kids"
+      :comments-to="`/ask/${id}`"
+    />
   </NewsItemLayout>
 </template>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Jobs } from '@/types/Jobs'
-import { useFetch } from '@vueuse/core'
 import NewsItemLayout from '@/components/NewsItemLayout.vue'
 import { getDomainName } from '@/utils/domain'
-import { timeDifferene } from '@/utils/time'
+import NewsItemMetadata from '@/components/NewsItemMetadata.vue'
+import { fetchHackerNewsResource } from '@/api/hackerNews'
 
 // set props
 interface Props {
@@ -11,15 +11,10 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const { data: resp } = await useFetch(
-  `https://hacker-news.firebaseio.com/v0/item/${props.id}.json?print=pretty`,
-)
-const news = JSON.parse(resp.value as string) as Jobs
-const author = news.by || 'no author available'
+const news = await fetchHackerNewsResource<Jobs>(`item/${props.id}`)
 const url = news.url ?? ''
 
 const domainName = getDomainName(url)
-const createdAt = timeDifferene(news.time)
 </script>
 
 <template>
@@ -38,15 +33,6 @@ const createdAt = timeDifferene(news.time)
         ({{ domainName }})
       </p>
     </div>
-    <div class="flex text-xs sm:text-sm text-slate-500">
-      <router-link :to="`/user/${author}`">
-        by
-        <span class="underline sm:no-underline sm:hover:underline hover:decoration-orange-500">{{
-          author
-        }}</span>
-      </router-link>
-      <p class="px-1 sm:px-4">|</p>
-      <p><span class="hidden sm:inline">created</span> {{ createdAt }}</p>
-    </div>
+    <NewsItemMetadata :author="news.by" :time="news.time" />
   </NewsItemLayout>
 </template>

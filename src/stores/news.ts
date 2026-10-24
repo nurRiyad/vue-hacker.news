@@ -1,6 +1,6 @@
-import { useFetch } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { fetchHackerNewsResource } from '@/api/hackerNews'
 
 export const useNewStore = defineStore('newsStore', () => {
   const topNewsList = ref<Array<number>>([])
@@ -11,64 +11,28 @@ export const useNewStore = defineStore('newsStore', () => {
   const topJobs = ref<Array<number>>([])
   const isNewsListFetching = ref<boolean>(false)
 
-  const getTopNewsList = async () => {
-    const { data } = await useFetch(
-      'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty',
-    )
-    topNewsList.value = JSON.parse(data.value as string) as Array<number>
-  }
-
-  const getNewNewsList = async () => {
-    const { data } = await useFetch(
-      'https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty',
-    )
-    newNewsList.value = JSON.parse(data.value as string) as Array<number>
-  }
-
-  const getBestNewsList = async () => {
-    const { data } = await useFetch(
-      'https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty',
-    )
-    bestNewsList.value = JSON.parse(data.value as string) as Array<number>
-  }
-
-  const getTopAsk = async () => {
-    const { data } = await useFetch(
-      'https://hacker-news.firebaseio.com/v0/askstories.json?print=pretty',
-    )
-    topAsk.value = JSON.parse(data.value as string) as Array<number>
-  }
-
-  const getTopJobs = async () => {
-    const { data } = await useFetch(
-      'https://hacker-news.firebaseio.com/v0/jobstories.json?print=pretty',
-    )
-    topJobs.value = JSON.parse(data.value as string) as Array<number>
-  }
-
-  const getTopShow = async () => {
-    const { data } = await useFetch(
-      'https://hacker-news.firebaseio.com/v0/showstories.json?print=pretty',
-    )
-    topShow.value = JSON.parse(data.value as string) as Array<number>
-  }
+  const storyLists = [
+    { endpoint: 'topstories', state: topNewsList },
+    { endpoint: 'newstories', state: newNewsList },
+    { endpoint: 'beststories', state: bestNewsList },
+    { endpoint: 'askstories', state: topAsk },
+    { endpoint: 'showstories', state: topShow },
+    { endpoint: 'jobstories', state: topJobs },
+  ]
 
   const fetchAllNews = async () => {
+    isNewsListFetching.value = true
     try {
-      isNewsListFetching.value = true
-
-      await Promise.all([
-        getTopNewsList(),
-        getBestNewsList(),
-        getNewNewsList(),
-        getTopAsk(),
-        getTopShow(),
-        getTopJobs(),
-      ])
+      await Promise.all(
+        storyLists.map(async ({ endpoint, state }) => {
+          state.value = await fetchHackerNewsResource<Array<number>>(endpoint)
+        }),
+      )
     } catch (error) {
       console.error(error)
+    } finally {
+      isNewsListFetching.value = false
     }
-    isNewsListFetching.value = false
   }
 
   return {

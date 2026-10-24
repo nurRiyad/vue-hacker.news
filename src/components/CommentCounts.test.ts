@@ -9,7 +9,10 @@ import ShowItem from '@/components/ShowItem.vue'
 
 const useFetchMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@vueuse/core', () => ({ useFetch: useFetchMock }))
+vi.mock('@vueuse/core', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@vueuse/core')>()),
+  useFetch: useFetchMock,
+}))
 
 const item = (kids?: Array<number>) => ({
   by: 'alice',
@@ -24,7 +27,11 @@ const item = (kids?: Array<number>) => ({
 })
 
 const mountItem = async (component: object, kids?: Array<number>) => {
-  useFetchMock.mockResolvedValue({ data: ref(JSON.stringify(item(kids))) })
+  useFetchMock.mockReturnValue({
+    get: () => ({
+      json: async () => ({ data: ref(item(kids)), error: ref(null) }),
+    }),
+  })
 
   const Host = defineComponent({
     render: () => h(Suspense, null, { default: () => h(component, { id: 1 }) }),
