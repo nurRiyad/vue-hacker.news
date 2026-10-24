@@ -1,11 +1,13 @@
 // @vitest-environment happy-dom
-import { flushPromises, mount, RouterLinkStub } from '@vue/test-utils'
+import { enableAutoUnmount, flushPromises, mount, RouterLinkStub } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
-import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { ref } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import TheNews from '@/views/TheNews.vue'
 import { useNewStore } from '@/stores/news'
+
+enableAutoUnmount(afterEach)
 
 const useFetchMock = vi.hoisted(() => vi.fn())
 
