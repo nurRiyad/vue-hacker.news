@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+import { useQuery } from '@pinia/colada'
 import { computed, defineAsyncComponent, watch } from 'vue'
 import { useHead } from '@vueuse/head'
 import { useRoute } from 'vue-router'
 import NewsLoader from '@/components/NewsLoader.vue'
+import QueryError from '@/components/QueryError.vue'
 import { usePagination } from '@/composables/usePagination'
 import { useScoreSortedItems } from '@/composables/useScoreSortedItems'
-import { useNewStore } from '@/stores/news'
+import { storyListQuery } from '@/queries/hackerNews'
 import type { Ask } from '@/types/Ask'
 import type { Show } from '@/types/Show'
 import { createPageHead } from '@/utils/seo'
@@ -64,19 +65,14 @@ const pageHead = computed(() => {
 
 useHead(pageHead)
 
-const newsStore = useNewStore()
-const { topNewsList, newNewsList, bestNewsList, topAsk, topJobs, topShow, isNewsListFetching } =
-  storeToRefs(newsStore)
+const {
+  data: storyList,
+  error: storyListError,
+  isLoading: isNewsListFetching,
+  refetch: refetchStoryList,
+} = useQuery(() => storyListQuery(newsType.value))
 
-const newsList = computed(() => {
-  if (newsType.value === 'top') return topNewsList.value
-  else if (newsType.value === 'new') return newNewsList.value
-  else if (newsType.value === 'best') return bestNewsList.value
-  else if (newsType.value === 'show') return topShow.value
-  else if (newsType.value === 'ask') return topAsk.value
-  else if (newsType.value === 'jobs') return topJobs.value
-  return []
-})
+const newsList = computed(() => storyList.value ?? [])
 
 const {
   currentPage,
@@ -90,10 +86,12 @@ const {
 
 const canSort = computed(() => newsType.value === 'ask' || newsType.value === 'show')
 const sortByScore = computed(() => canSort.value && route.query.sort === 'score')
-const { items: sortedItems, isLoading: isSorting } = useScoreSortedItems<Ask | Show>(
-  filteredNews,
-  sortByScore,
-)
+const {
+  items: sortedItems,
+  isLoading: isSorting,
+  error: sortingError,
+  refetch: refetchSortedItems,
+} = useScoreSortedItems<Ask | Show>(filteredNews, sortByScore)
 
 const displayedItems = computed(() =>
   sortByScore.value
@@ -101,8 +99,14 @@ const displayedItems = computed(() =>
     : filteredNews.value.map((id) => ({ id, data: undefined })),
 )
 
+const pageError = computed(() => (sortByScore.value ? sortingError.value : storyListError.value))
+
+function retryPageQuery() {
+  if (sortByScore.value) void refetchSortedItems()
+  else void refetchStoryList()
+}
+
 watch([newsType, sortByScore], resetPage)
-watch(newsType, (type) => newsStore.fetchNews(type), { immediate: true })
 </script>
 
 <template>
@@ -132,7 +136,8 @@ watch(newsType, (type) => newsStore.fetchNews(type), { immediate: true })
         >sorted by score within this page</span
       >
     </nav>
-    <template v-if="isNewsListFetching || isSorting">
+    <QueryError v-if="pageError" @retry="retryPageQuery" />
+    <template v-else-if="isNewsListFetching || isSorting">
       <div v-for="n in 20" :key="n" class="flex-grow">
         <NewsLoader :id="n" />
       </div>

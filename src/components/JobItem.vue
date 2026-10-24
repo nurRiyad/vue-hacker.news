@@ -1,23 +1,33 @@
 <script setup lang="ts">
+import { useQuery } from '@pinia/colada'
+import { computed } from 'vue'
 import type { Jobs } from '@/types/Jobs'
 import NewsItemLayout from '@/components/NewsItemLayout.vue'
 import { getDomainName } from '@/utils/domain'
+import QueryError from '@/components/QueryError.vue'
 import NewsItemMetadata from '@/components/NewsItemMetadata.vue'
-import { fetchHackerNewsResource } from '@/api/hackerNews'
+import { itemQuery } from '@/queries/hackerNews'
 
 interface Props {
   id: number
 }
 const props = defineProps<Props>()
 
-const news = await fetchHackerNewsResource<Jobs>(`item/${props.id}`)
-const url = news.url ?? ''
+const { data, error, refresh, refetch } = useQuery(itemQuery<Jobs>(props.id))
+await refresh()
 
-const domainName = getDomainName(url)
+const news = computed(() => data.value)
+const url = computed(() => news.value?.url ?? '')
+const domainName = computed(() => getDomainName(url.value))
+
+function retry() {
+  void refetch()
+}
 </script>
 
 <template>
-  <NewsItemLayout :score="news.score">
+  <QueryError v-if="error" @retry="retry" />
+  <NewsItemLayout v-else-if="news" :score="news.score">
     <a
       :href="url"
       target="_blank"

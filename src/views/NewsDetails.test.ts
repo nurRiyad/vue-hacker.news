@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { ref } from 'vue'
 import NewsDetails from '@/views/NewsDetails.vue'
+import { createPiniaColadaPlugins } from '@/tests/piniaColada'
 
 const useFetchMock = vi.hoisted(() => vi.fn())
 const useHeadMock = vi.hoisted(() => vi.fn())
@@ -56,7 +57,10 @@ describe('NewsDetails', () => {
     await router.push(path)
     await router.isReady()
     const wrapper = mount(NewsDetails, {
-      global: { plugins: [router], stubs: { RouterLink: RouterLinkStub } },
+      global: {
+        plugins: [...createPiniaColadaPlugins(), router],
+        stubs: { RouterLink: RouterLinkStub },
+      },
     })
     await flushPromises()
 

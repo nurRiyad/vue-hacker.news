@@ -6,7 +6,7 @@
     <img width="200" alt="Vue logo" src="./src/assets/previews/logo.png">
 </p>
 
-Hacker News clone built with [Vue 3](https://vuejs.org), [Pinia](https://pinia.vuejs.org/), [Tailwind](https://tailwindcss.com/) & [VueUse](https://vueuse.org/)
+Hacker News clone built with [Vue 3](https://vuejs.org), [Pinia](https://pinia.vuejs.org/), [Pinia Colada](https://pinia-colada.esm.dev/), [Tailwind](https://tailwindcss.com/) & [VueUse](https://vueuse.org/)
 
 <p align="center">
   <a href="https://hnews-nurriyad.netlify.app" target="_blank">
@@ -66,9 +66,9 @@ docker run --rm -p 4173:4173 vue-hacker-news
 
 A client-side app with no backend. It reads the public [Hacker News API](https://github.com/HackerNews/API) directly.
 
-- `src/stores/news.ts`: Pinia store holding the story ID lists (top, new, best, ask, show, jobs).
+- `src/queries/hackerNews.ts`: typed Hacker News queries, cached and deduplicated by Pinia Colada.
 - `src/views/`: route-level pages. `TheNews` lists and paginates stories (20 per page), `NewsDetails` shows a story with its comments, and `UserPage` shows a user profile.
-- `src/components/`: item cards that each fetch their own item by ID, plus loaders and icons.
+- `src/components/`: item cards that read cached story, comment, and user data, plus loaders and icons.
 
 | Route                                                       | View          |
 | ----------------------------------------------------------- | ------------- |

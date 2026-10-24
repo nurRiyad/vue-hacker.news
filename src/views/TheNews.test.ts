@@ -1,11 +1,10 @@
 // @vitest-environment happy-dom
 import { enableAutoUnmount, flushPromises, mount, RouterLinkStub } from '@vue/test-utils'
-import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { ref } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import TheNews from '@/views/TheNews.vue'
-import { useNewStore } from '@/stores/news'
+import { createPiniaColadaPlugins } from '@/tests/piniaColada'
 
 enableAutoUnmount(afterEach)
 
@@ -36,20 +35,8 @@ const defaultStoryLists: Record<string, number[]> = {
 }
 const storyLists = { ...defaultStoryLists }
 
-let pinia: ReturnType<typeof createPinia>
-let store: ReturnType<typeof useNewStore>
-
 beforeEach(() => {
   Object.assign(storyLists, defaultStoryLists)
-  pinia = createPinia()
-  setActivePinia(pinia)
-  store = useNewStore()
-  store.topNewsList = [101, 102]
-  store.newNewsList = [201, 202]
-  store.bestNewsList = [301, 302]
-  store.topAsk = [401, 402]
-  store.topShow = [501, 502]
-  store.topJobs = [601, 602]
   useFetchMock.mockReset()
   useFetchMock.mockImplementation((url: string) => {
     const list = Object.entries(storyLists).find(([endpoint]) => url.includes(`/${endpoint}.json`))
@@ -93,7 +80,10 @@ const mountPage = async (type: string) => {
   await router.isReady()
 
   const wrapper = mount(TheNews, {
-    global: { plugins: [pinia, router], stubs: { RouterLink: RouterLinkStub } },
+    global: {
+      plugins: [...createPiniaColadaPlugins(), router],
+      stubs: { RouterLink: RouterLinkStub },
+    },
   })
   await flushPromises()
   return { wrapper, router }
@@ -140,5 +130,19 @@ describe('TheNews', () => {
     expect(pageLabel()).toBe('Page 1 of 1')
     await vi.waitFor(() => expect(wrapper.text()).toContain('Story 401'))
     expect(wrapper.text()).toContain('Story 402')
+  })
+
+  it('shows a retry action when a story list request fails', async () => {
+    useFetchMock.mockImplementationOnce(() => ({
+      get: () => ({
+        json: async () => ({ data: ref(null), error: ref(new Error('network down')) }),
+      }),
+    }))
+    const { wrapper } = await mountPage('top')
+
+    expect(wrapper.get('[role="alert"]').text()).toContain("Couldn't load Hacker News data")
+
+    await wrapper.get('[role="alert"] button').trigger('click')
+    await vi.waitFor(() => expect(wrapper.text()).toContain('Story 101'))
   })
 })
