@@ -48,26 +48,59 @@ describe('useNewStore', () => {
     expect(store.isNewsListFetching).toBe(false)
   })
 
-  it('loads every story list from the Hacker News API', async () => {
+  it('loads only the requested story list from the Hacker News API', async () => {
     respondWithLists()
     const store = useNewStore()
 
-    await store.fetchAllNews()
+    await store.fetchNews('top')
 
-    expect(useFetchMock).toHaveBeenCalledTimes(6)
+    expect(useFetchMock).toHaveBeenCalledTimes(1)
+    expect(useFetchMock).toHaveBeenCalledWith(
+      'https://hacker-news.firebaseio.com/v0/topstories.json',
+    )
     expect(store.topNewsList).toEqual(lists.topstories)
-    expect(store.newNewsList).toEqual(lists.newstories)
-    expect(store.bestNewsList).toEqual(lists.beststories)
-    expect(store.topAsk).toEqual(lists.askstories)
-    expect(store.topShow).toEqual(lists.showstories)
-    expect(store.topJobs).toEqual(lists.jobstories)
+    expect(store.newNewsList).toEqual([])
+  })
+
+  it.each([
+    ['new', 'newNewsList', 'newstories'],
+    ['best', 'bestNewsList', 'beststories'],
+    ['ask', 'topAsk', 'askstories'],
+    ['show', 'topShow', 'showstories'],
+    ['jobs', 'topJobs', 'jobstories'],
+  ] as const)('maps the %s category to its list', async (type, key, endpoint) => {
+    respondWithLists()
+    const store = useNewStore()
+
+    await store.fetchNews(type)
+
+    expect(store[key]).toEqual(lists[endpoint])
+  })
+
+  it('ignores unknown categories', async () => {
+    const store = useNewStore()
+
+    await store.fetchNews('nope')
+    await store.fetchNews('toString')
+
+    expect(useFetchMock).not.toHaveBeenCalled()
+  })
+
+  it('does not refetch a list that is loaded or in flight', async () => {
+    respondWithLists()
+    const store = useNewStore()
+
+    await Promise.all([store.fetchNews('top'), store.fetchNews('top')])
+    await store.fetchNews('top')
+
+    expect(useFetchMock).toHaveBeenCalledTimes(1)
   })
 
   it('is fetching while requests are pending and idle afterwards', async () => {
     respondWithLists()
     const store = useNewStore()
 
-    const pending = store.fetchAllNews()
+    const pending = store.fetchNews('top')
     expect(store.isNewsListFetching).toBe(true)
 
     await pending
@@ -82,11 +115,14 @@ describe('useNewStore', () => {
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
     const store = useNewStore()
 
-    await store.fetchAllNews()
+    await store.fetchNews('top')
 
     expect(consoleError).toHaveBeenCalledWith(error)
     expect(store.isNewsListFetching).toBe(false)
     expect(store.topNewsList).toEqual([])
+
+    await store.fetchNews('top')
+    expect(useFetchMock).toHaveBeenCalledTimes(2)
 
     consoleError.mockRestore()
   })

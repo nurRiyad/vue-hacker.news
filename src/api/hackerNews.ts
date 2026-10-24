@@ -3,9 +3,7 @@ import { useFetch } from '@vueuse/core'
 const HACKER_NEWS_API_BASE_URL = 'https://hacker-news.firebaseio.com/v0'
 
 export async function fetchHackerNewsResource<T>(resource: string): Promise<T> {
-  const { data, error } = await useFetch(
-    `${HACKER_NEWS_API_BASE_URL}/${resource}.json?print=pretty`,
-  )
+  const { data, error } = await useFetch(`${HACKER_NEWS_API_BASE_URL}/${resource}.json`)
     .get()
     .json<T>()
 
